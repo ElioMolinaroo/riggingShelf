@@ -1,0 +1,1704 @@
+global proc shelf_Elio () {
+    global string $gBuffStr;
+    global string $gBuffStr0;
+    global string $gBuffStr1;
+
+
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 39
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Add separator to the end of the shelf" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Add separator to the end of the shelf" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "add sep" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "addClip.png" 
+        -image1 "addClip.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "import maya.cmds as cmds\nimport maya.mel as mel\ncmds.separator(width=12, height = 35, style='shelf', hr=False, parent=mel.eval(\"tabLayout -q -selectTab $gShelfTopLevel\"))" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Delete Unknown Nodes" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Delete Unknown Nodes" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "DEL UNKNOWN" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "trash.png" 
+        -image1 "trash.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "{\n    string $unknownNodes[] = `lsType unknown`;\n    for($node in $unknownNodes){\n        if($node==\"<done>\")\n            break;\n        if(`objExists $node`)\n        {\n            int $lockState[] = `lockNode -q -l $node`;\n            if($lockState[0]==1)\n            lockNode -l off $node;\n            delete $node;\n        }\n    }\n}" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "import maya.cmds as cmds\n\nsel = cmds.ls(selection=True)\n\nfor i i..." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "SUBD" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "SUBD" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "subdivTessellate.png" 
+        -image1 "subdivTessellate.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "import maya.cmds as cmds\n\nsel = cmds.ls(selection=True)\n\nfor i in sel:\n    cmds.setAttr(i + '.rman_subdivScheme', 1)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Renamer Tool" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Renamer Tool" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "NAME" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "menuIconCopy.png" 
+        -image1 "menuIconCopy.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "//This is a paid script pack and is not free to use. Please purchase a copy and download the script pack here www.gumroad.com/malcolm341\n\n//Thanks very much for your support! Each purchase helps maintain the ad free Youtube channel found here www.youtube.com/malcolm341\n\n\n//***********************************************************************************************************************************************************\nglobal string $m341_reNamer_Version;\n$m341_reNamer_Version = \"reNamer v2.4\";\n\n\n//***********************************************************************************************************************************************************\n//Help\nglobal proc m341_reNamer_help()\n{\n\tglobal string $m341_reNamer_HelpWindow;\n\n\tif (`window -exists $m341_reNamer_HelpWindow`)\n\t{\n\t\tglobal string $m341_reNamer_HelpWindow;\n\t\tdeleteUI $m341_reNamer_HelpWindow;\n\t}\n\t\n\tglobal string $m341_reNamer_Version;\n\t$m341_reNamer_HelpWindow = `window -title (\"Help \" + $m341_reNamer_Version) -leftEdge 900 -topEdge 115 -toolbox true -sizeable false -resizeToFitChildren false -width 800 -height 635`;\n\t\n\tpaneLayout -configuration \"horizontal2\";\n\tscrollLayout;\n\trowColumnLayout -numberOfColumns 1;\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -font \"boldLabelFont\" -label \"SORT OUTLINER BY NAME\";\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"-Sorts the outliner alphabetically. If you have something selected that selection will be sorted aphabetically to the bottom of the outliner, if nothing's selected the whole outliner will be sorted alphabetically.\\n\\n\";\n\t\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -font \"boldLabelFont\" -label \"RENAME FIELD\";\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"-Stores the current name you want things to be renamed to, also acts as the search for field when you want to replace part of a name.\\n\";\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"-Type something into the rename field and click the rename button to rename selected objects to the name you typed.\\n\";\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"-The increment style at the end of the name can be changed from the increment dropdown.\\n\\n\";\n\t\n\t\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -font \"boldLabelFont\" -label \"REPLACE FIELD\";\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"-To replace part of a name use the top text field to search for, and the buttom text field to replace with. Click the replace button to replace the above text with the below text that you typed in both text fields.\\n\\n\";\n\t\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -font \"boldLabelFont\" -label \"PRE\";\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"-Add the current text from the naming field as a prefix.\\n\\n\";\n\t\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -font \"boldLabelFont\" -label \"SUF\";\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"-Adds the current text from the naming field as a suffix.\\n\\n\";\n\t\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -font \"boldLabelFont\" -label \"TB NAME MATCH\";\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"-Renames meshes and inserts the word _high or _low if the mesh is inside a group named high or low. This is extremely helpful for renaming multiple meshes in one click if you're going to use the name matching feature of Marmoset Toolbag or another baking program.\\n\";\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"-Create a group named high and a group named low. Put some meshes in it. Select the meshes in the groups, but not the groups themselves and click the TB name match button. Make sure to select meshes in the numeric order you want them named so the number increment works correctly.\\n\";\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"-Meshes will be renamed:\";\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"name_high_01, name_high_02, name_high_03, etc.\";\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"name_low_01, name_low_02, name_low_03, etc.\\n\\n\";\n\t\n\t\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -font \"boldLabelFont\" -label \"INCREMENT\";\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"-The increment style that gets added to the end of the name.\\n\\n\";\n\t\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -font \"boldLabelFont\" -label \"RENAME\";\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"-Renames currently selected objects using what you typed in the rename field.\\n\\n\";\t\n\t\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -font \"boldLabelFont\" -label \"YOUTUBE VIDEO HERE\";\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"<a href=\\\"https://youtu.be/TpgpDisTDLM?list=PLAUgGUDpaMENfz8Nd7Zw-LxDK_v5ZflY6\\\"style=\\\"color:rgb(187,187,187)\\;\\\">https://youtu.be/TpgpDisTDLM?list=PLAUgGUDpaMENfz8Nd7Zw-LxDK_v5ZflY6</a><br><br>\";\n\t\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -font \"boldLabelFont\" -label \"NAME MATCHING TUTORIAL HERE\";\n\ttext -align \"left\" -wordWrap 1 -width 780 -hl 1 -label \"<a href=\\\"https://youtu.be/7mmGVMaLi_4?list=PLAUgGUDpaMENfz8Nd7Zw-LxDK_v5ZflY6\\\"style=\\\"color:rgb(187,187,187)\\;\\\">https://youtu.be/7mmGVMaLi_4?list=PLAUgGUDpaMENfz8Nd7Zw-LxDK_v5ZflY6</a><br><br>\";\n\t\n\tshowWindow $m341_reNamer_HelpWindow;\n}\n\n\n//***********************************************************************************************************************************************************\n//Sort Outliner by Name\nglobal proc m341_reNamer_sortOutliner()\n{\n    string $selected[] = `ls -sl`;\n    int $sizeSelected = `size $selected`;\n    string $objs[] = {};\n\n\t//Check if outliner open and set outliner sort to hierarchy so sort works\n\toutlinerEditor -edit -sortOrder none outlinerPanel1;\n\t//int $isOutlinerOpen = `workspaceControl -q -visible Outliner`;\n    //if ($isOutlinerOpen == 1)\n\t//{\n\n\t//}\n\n\n    if ($sizeSelected == 0)\n    {\n        SelectAll;\n        $objs = sort(`ls -sl`);\n   \t    for ($item=0;$item<size($objs);$item++)\n    \t{\n\t\t    reorder -back $objs[$item];\n    \t}\n\t\tselect $selected;\n        print \"Whole outliner sorted alphabetically\\n\";\n    }\n    \n    else\n    {\n        $objs = sort(`ls -sl`);\n        for ($item=0;$item<size($objs);$item++)\n    \t{\n\n\t\t    reorder -back $objs[$item];\n    \t}\n        print \"Outliner selection sorted alphabetically to bottom\\n\";    \n    }\n}\n\n\n//***********************************************************************************************************************************************************\n//Change text value of rename field\nglobal proc m341_textValueChanged_Renamer()\n{\n\tglobal string $m341_TextFieldName_Renamer;\n\tglobal string $m341_UserInput_Renamer;\t\t\t\n\t//query the value from the text field and store it in a variable\n\t$m341_UserInput_Renamer = `textField -query -tx $m341_TextFieldName_Renamer`;\n\t//print value\n\tprint(\"Rename field set to \"+ $m341_UserInput_Renamer + \"\\n\");\n}\n\n\n//***********************************************************************************************************************************************************\n//Change text value of replace field\nglobal proc m341_textValueChanged_RenamerReplace()\n{\n\tglobal string $m341_TextFieldName_RenamerReplace;\n\tglobal string $m341_UserInput_RenamerReplace;\t\t\t\n\t//query the value from the text field and store it in a variable\n\t$m341_UserInput_RenamerReplace = `textField -query -tx $m341_TextFieldName_RenamerReplace`;\n\t//print value\n\tprint(\"Replace field set to \"+ $m341_UserInput_RenamerReplace + \"\\n\");\n}\n\n\n//***********************************************************************************************************************************************************\n//Rename\nglobal proc m341_reNamer_rename()\n{\n\tm341_textValueChanged_Renamer();\n\tint $reNamerDropDownIndex = `optionMenu -query -select reNamerDropDown`;\n\tstring $reNamerDropDownArray[] = {\"_A\", \"\", \"_\", \"_0\", \"_00\", \"_000\", \"_LOD_\"};\n\tglobal string $m341_UserInput_Renamer;\n\t\n\t//Final select variables\n\tglobal string $m341_reNamer_finalSelect[];\n\t$m341_reNamer_finalSelect = {};\n\tstring $tempItem[] = {};\n\n\n\trenameSelectionList(\"maTempNaimingFailed_1001\");\n\tstring $Objs[] = `ls -sl`;\n\tint $ObjsSize = `size $Objs`;\n\tint $increment;\n\t//Start increment at zero if using LOD rename\n\tif ($reNamerDropDownIndex == 7)\n\t{\n\t\t$increment = 0;\n\t}\n\telse\n\t{\n\t\t$increment = 1;\n\t}\n\t\n\tstring $newList[];\n\tstring $alphabetArray[] = {\"\", \"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\", \"J\", \"K\", \"L\", \"M\", \"N\", \"O\", \"P\", \"Q\", \"R\", \"S\", \"T\", \"U\", \"V\", \"W\", \"X\", \"Y\", \"Z\"};\n\tint $counter = 0;\n\tglobal int $m341_firstLetter;\n\t$m341_firstLetter = 0;\n\tglobal int $m341_secondLetter;\n\t$m341_secondLetter = 0;\n\tglobal int $m341_thirdLetter;\n\t$m341_thirdLetter = 0;\n\t\n\tif ($reNamerDropDownIndex == 1)\n\t{\n\t\tfor ($Item = 0; $Item < $ObjsSize; ++$Item)\n\t\t{\n\t\t\tselect $Objs[$counter];\n\t\t\tglobal int $m341_firstLetter;\n\t\t\tglobal int $m341_thirdLetter;\n\t\t\tglobal int $m341_secondLetter;\n\t\t\t\n\t\t\tif ($counter < 27)\n\t\t\t{\n\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\t$m341_firstLetter = $m341_firstLetter + 1;\n\n\t\t\t\tif ($m341_firstLetter == 27)\n\t\t\t\t{\n\t\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\t\t$m341_firstLetter = 1;\n\t\t\t\t}\n\t\t\t}\n\t\t\t\n\t\t\tif ($counter > 25 && $counter < 702)\n\t\t\t{\n\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t$m341_secondLetter = $m341_secondLetter + 1;\n\t\n\t\t\t\tif ($m341_secondLetter == 27)\n\t\t\t\t{\n\t\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\t\t$m341_firstLetter = $m341_firstLetter + 1;\n\t\t\t\t\t\n\t\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t\t$m341_secondLetter = 1;\n\t\t\t\t}\n\t\t\t}\n\t\t\t\n\t\t\tif ($counter > 701 &&  $counter < 728)\n\t\t\t{\n\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\t$m341_firstLetter = 1;\n\t\t\t\t\n\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t$m341_secondLetter = 1;\n\t\t\t\t\n\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\t$m341_thirdLetter = $m341_thirdLetter + 1;\n\t\n\t\t\t\tif ($m341_thirdLetter == 27)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\t\t$m341_thirdLetter = 1;\n\t\t\t\t}\n\t\t\t}\n\t\t\t\n\t\t\tif ($counter > 727)\n\t\t\t{\n\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\t$m341_thirdLetter = $m341_thirdLetter + 1;\n\t\n\t\t\t\tif ($m341_thirdLetter == 27)\n\t\t\t\t{\n\t\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t\t$m341_secondLetter = $m341_secondLetter + 1;\n\t\t\t\t\t\n\t\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\t\t$m341_thirdLetter = 1;\n\t\t\t\t}\n\t\t\t}\n\t\t\t\n\t\t\trename ($m341_UserInput_Renamer + \"_\" + $alphabetArray[$m341_firstLetter] + $alphabetArray[$m341_secondLetter] + $alphabetArray[$m341_thirdLetter]);\n\t\t\t\n\t\t\t//Store each newly named object so you can select it at the end\n\t\t\t$tempItem = `ls -sl -fl`;\n\t\t\tglobal string $m341_reNamer_finalSelect[];\n\t\t\tselect $m341_reNamer_finalSelect;\n\t\t\tselect -add $tempItem;\n\t\t\t$m341_reNamer_finalSelect = `ls -sl -fl`;\n\t\t\t\n\t\t\t$counter = $counter + 1;\n\t\t}\n\t\t\n\t\tselect -clear;\n\t\t\n\t\tglobal string $m341_reNamer_finalSelect[];\n\t\tselect $m341_reNamer_finalSelect;\n\t\t\n\t\t\n\t\tprint (\"Renamed: \" + $m341_UserInput_Renamer + \"\\n\");\n\t\tif ($ObjsSize > 1377)\n\t\t{\n\t\t\terror \"Alphabetical increment can only rename up to 1378 objects\\n\";\n\t\t}\n\t\t\n\t}\n\t\n\telse\n\t{\n\t\tfor ($Item = 0; $Item < $ObjsSize; ++$Item)\n\t\t{\n\t\t\tselect $Objs[$counter];\n\t\t\trename ($m341_UserInput_Renamer + $reNamerDropDownArray[$reNamerDropDownIndex -1] + $increment);\n\t\t\t\n\t\t\t//Remove extra zero so names actually look good\n\t\t\tstring $REZ_Items[];\n\t\t\t$REZ_Items = `ls -sl`;\n\t\t\t\n\t\t\t//Check _01 name for extra zero\n\t\t\tif ($reNamerDropDownIndex == 4)\n\t\t\t{\n\t\t\t\tif(`gmatch $REZ_Items[0] \"*_01\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_02\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_03\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_04\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_05\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_06\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_07\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_08\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_09\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t//Remove extra zero\n\t\t\t\telse\n\t\t\t\t{\n\t\t\t\t\tsearchReplaceNames \"_0\" \"_\" \"selected\";\n\t\t\t\t}\n\t\t\t}\n\t\t\t\n\t\t\t//Check _001 name for extra zero\n\t\t\tif ($reNamerDropDownIndex == 5)\n\t\t\t{\n\t\t\t\tif(`gmatch $REZ_Items[0] \"*_001\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_002\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_003\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_004\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_005\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_006\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_007\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_008\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_009\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t//Remove extra zero\n\t\t\t\telse\n\t\t\t\t{\n\t\t\t\t\tsearchReplaceNames \"_00\" \"_0\" \"selected\";\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t//Remove extra zero 99-999\n\t\t\t\t$finalZeroTest = `ls -sl`;\n\t\t\t\t//Convert string array to string\n\t\t\t\t$objName = $finalZeroTest[0];\n\t\t\t\t//Strip off all but last 4 characters\n\t\t\t\tstring $endStr = endString($objName, 4);\n\t\t\t\t\n\t\t\t\tif(`gmatch $endStr \"0[1-9]*\"`)\n\t\t\t\t{\n\t\t\t\t\tsearchReplaceNames \"_0\" \"_\" \"selected\";\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t//Remove extra zero 999-9999\n\t\t\t\t$finalZeroTest = `ls -sl`;\n\t\t\t\t//Convert string array to string\n\t\t\t\t$objName = $finalZeroTest[0];\n\t\t\t\t//Strip off all but last 4 characters\n\t\t\t\t$endStr = endString($objName, 5);\n\t\t\t\t\n\t\t\t\tif(`gmatch $endStr \"0[1-9]*\"`)\n\t\t\t\t{\n\t\t\t\t\tsearchReplaceNames \"_0\" \"_\" \"selected\";\n\t\t\t\t}\n\t\t\t}\n\t\t\t\n\t\t\t//Check _0001 name for extra zero\n\t\t\tif ($reNamerDropDownIndex == 6)\n\t\t\t{\n\t\t\t\tif(`gmatch $REZ_Items[0] \"*_0001\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0002\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0003\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0004\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0005\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0006\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0007\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0008\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0009\"`)\n\t\t\t\t{\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t//Remove extra zero\n\t\t\t\telse\n\t\t\t\t{\n\t\t\t\t\tsearchReplaceNames \"_000\" \"_00\" \"selected\";\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t//Remove extra zero 99-999\n\t\t\t\t$finalZeroTest = `ls -sl`;\n\t\t\t\t//Convert string array to string\n\t\t\t\t$objName = $finalZeroTest[0];\n\t\t\t\t//Strip off all but last 4 characters\n\t\t\t\tstring $endStr = endString($objName, 4);\n\t\t\t\t\n\t\t\t\tif(`gmatch $endStr \"0[1-9]*\"`)\n\t\t\t\t{\n\t\t\t\t\tsearchReplaceNames \"_0\" \"_\" \"selected\";\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t//Remove extra zero 999-9999\n\t\t\t\t$finalZeroTest = `ls -sl`;\n\t\t\t\t//Convert string array to string\n\t\t\t\t$objName = $finalZeroTest[0];\n\t\t\t\t//Strip off all but last 5 characters\n\t\t\t\t$endStr = endString($objName, 5);\n\t\t\t\t\n\t\t\t\tif(`gmatch $endStr \"0[1-9]*\"`)\n\t\t\t\t{\n\t\t\t\t\tsearchReplaceNames \"_00\" \"_\" \"selected\";\n\t\t\t\t}\n\t\t\t}\n\t\t\t\n\t\t\t//Add to selection list so everyting can be selected after the names change\n\t\t\t//string $newNameObjs[] = `ls -sl`;\n\t\t\t//select -add $newList;\n\t\t\t//$newList = `ls -sl`;\n\t\t\t\n\t\t\t//Store each newly named object so you can select it at the end\n\t\t\t$tempItem = `ls -sl -fl`;\n\t\t\tglobal string $m341_reNamer_finalSelect[];\n\t\t\tselect $m341_reNamer_finalSelect;\n\t\t\tselect -add $tempItem;\n\t\t\t$m341_reNamer_finalSelect = `ls -sl -fl`;\n\t\t\t\n\t\t\t$increment = $increment + 1;\n\t\t\t$counter = $counter + 1;\n\t\t\t//select $newList;\n\t\t}\n\t\t\n\t\tselect -clear;\n\t\t\n\t\t//Select newly named objects\n\t\tglobal string $m341_reNamer_finalSelect[];\n\t\tselect $m341_reNamer_finalSelect;\n\t\t\n\t\tprint (\"Renamed: \" + $m341_UserInput_Renamer + \"\\n\");\n\t}\n}\n\n\n//***********************************************************************************************************************************************************\n//Prefix\nglobal proc m341_reNamer_prefix()\n{\n\tm341_textValueChanged_Renamer();\n\tglobal string $m341_UserInput_Renamer;\n\t\n\tglobal string $m341_reNamer_prefix_selection[];\n\t$m341_reNamer_prefix_selection = {};\n\t\n\tstring $array[] = `ls -sl -fl`;\n\tstring $tokens[];\n\tfor ($item in $array)\n\t{\n\t\tselect $item;\n\t\tstring $name[] = `ls -sl`;\n        tokenize $name[0] \"|\" $tokens;\n\t\tstring $shortName[] = $tokens;\n\t\t$name[0] = $shortName[size($shortName)-1];\n\t\t\n\t\trename ($m341_UserInput_Renamer + $name[0]);\n\t\t\n\t\t//Create selection list after rename\n\t\tglobal string $m341_reNamer_prefix_selection[];\n\t\tselect -add $m341_reNamer_prefix_selection;\n\t\t$m341_reNamer_prefix_selection = `ls -sl -l`;\n\t}\n\t\n\tprint (\"Prefix: \" + $m341_UserInput_Renamer + \"\\n\");\n}\n\n\n//***********************************************************************************************************************************************************\n//Suffix\nglobal proc m341_reNamer_suffix()\n{\n\tm341_textValueChanged_Renamer();\n\tglobal string $m341_UserInput_Renamer;\n\t\n\tglobal string $m341_reNamer_prefix_selection[];\n\t$m341_reNamer_prefix_selection = {};\n\t\n\tstring $array[] = `ls -sl -fl`;\n\tstring $tokens[];\n\tfor ($item in $array)\n\t{\n\t\tselect $item;\n\t\tstring $name[] = `ls -sl`;\n        tokenize $name[0] \"|\" $tokens;\n\t\tstring $shortName[] = $tokens;\n\t\t$name[0] = $shortName[size($shortName)-1];\n\t\t\n\t\t//rename ($m341_UserInput_Renamer + $name[0]);\n\t\trename ($name[0] + $m341_UserInput_Renamer);\n\t\t\n\t\t//Create selection list after rename\n\t\tglobal string $m341_reNamer_prefix_selection[];\n\t\tselect -add $m341_reNamer_prefix_selection;\n\t\t$m341_reNamer_prefix_selection = `ls -sl -l`;\n\t}\n\t\n\tprint (\"Suffix: \" + $m341_UserInput_Renamer + \"\\n\");\n}\n\n\n//***********************************************************************************************************************************************************\n//Replace\nglobal proc m341_reNamer_replace()\n{\n\tm341_textValueChanged_Renamer();\n\tm341_textValueChanged_RenamerReplace();\n\tglobal string $m341_UserInput_Renamer;\n\tglobal string $m341_UserInput_RenamerReplace;\t\t\t\n\tsearchReplaceNames $m341_UserInput_Renamer $m341_UserInput_RenamerReplace \"selected\";\n\tprint (\"Replaced \" + $m341_UserInput_RenamerReplace + \" with \" + $m341_UserInput_Renamer + \"\\n\");\n}\n\n\n//***********************************************************************************************************************************************************\n//Group Match NEW\nglobal proc m341_reNamer_groupMatch()\n{\n\t//Filter list of objects by name\n\tm341_textValueChanged_Renamer();\n\tint $reNamerDropDownIndex = `optionMenu -query -select reNamerDropDown`;\n\tstring $reNamerDropDownArray[] = {\"_A\", \"\", \"_\", \"_0\", \"_00\", \"_000\", \"_LOD_\"};\n\tglobal string $m341_UserInput_Renamer;\n\tstring $searchForHigh[] = `ls -sl -long`;\n\tselect -cl;\n\t\n\tglobal string $m341_reNamer_finalSelectHigh[];\n\t$m341_reNamer_finalSelectHigh = `ls -sl`;\n\tglobal string $m341_reNamer_finalSelectLow[];\n\t$m341_reNamer_finalSelectLow = `ls -sl`;\n\tstring $tempItem[] = {};\n\t\t\n\t\n\tfor ($Item in $searchForHigh)\n\t{\n\t\tif (`gmatch $Item \"*high*\"`)   \n\t\t{\n\t\t\t$highObjs = $Item;\n\t\t\tselect -add $highObjs;\n\t\t}\n\t\t\n\t\tif (`gmatch $Item \"*low*\"`)   \n\t\t{\n\t\t\t$lowObjs = $Item;\n\t\t\tselect -d $lowObjs;\n\t\t}\n\t}    \n\tstring $found_High[] = `ls -sl -long`;\n\tint $sizeFound_High = `size $found_High`;\n\t\n\tselect -clear;\n\tfor ($Item in $searchForHigh)\n\t{\n\t\tif (`gmatch $Item \"*low*\"`)\n\t\t{\n\t\t\t$lowObjs = $Item;\n\t\t\tselect -add $lowObjs;\n\t\t}\n\t\t\n\t\tif (`gmatch $Item \"*high*\"`)\n\t\t{\n\t\t\t$highObjs = $Item;\n\t\t\tselect -d $highObjs;\n\t\t}\n\t}    \n\tstring $found_Low[] = `ls -sl -long`;\n\tint $sizeFound_Low = `size $found_Low`;\n\t\n\t//Select high list and add high name matching\n\tselect $found_High;\n\tfor ($Item in $found_High)\n\t{   \n\t\trenameSelectionList(\"namingFailed_matemp_1001\");\n\t}\n\t\n\t{\n\t\tstring $listHigh[] = `ls -sl`;\n\t\tint $listHighSize = `size $listHigh`;\n\t\t\n\t\tstring $Objs[] = `ls -sl`;\n\t\tint $ObjsSize = `size $Objs`;\n\t\tint $increment;\n\t\t//Start increment at zero if using LOD rename\n\t\tif ($reNamerDropDownIndex == 7)\n\t\t{\n\t\t\t$increment = 0;\n\t\t}\n\t\telse\n\t\t{\n\t\t\t$increment = 1;\n\t\t}\n\t\tstring $alphabetArray[] = {\"\", \"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\", \"J\", \"K\", \"L\", \"M\", \"N\", \"O\", \"P\", \"Q\", \"R\", \"S\", \"T\", \"U\", \"V\", \"W\", \"X\", \"Y\", \"Z\"};\n\t\tint $counter = 0;\n\t\tglobal int $m341_firstLetter;\n\t\t$m341_firstLetter = 0;\n\t\tglobal int $m341_secondLetter;\n\t\t$m341_secondLetter = 0;\n\t\tglobal int $m341_thirdLetter;\n\t\t$m341_thirdLetter = 0;\n\t\t\n\t\tif ($reNamerDropDownIndex == 1)\n\t\t{\n\t\t\tfor ($item = 0; $item < $ObjsSize; ++$item)\n\t\t\t{\n\t\t\t\tselect $Objs[$counter];\n\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t\n\t\t\t\tif ($counter < 27)\n\t\t\t\t{\n\t\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\t\t$m341_firstLetter = $m341_firstLetter + 1;\n\t\n\t\t\t\t\tif ($m341_firstLetter == 27)\n\t\t\t\t\t{\n\t\t\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\t\t\t$m341_firstLetter = 1;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\tif ($counter > 25 && $counter < 702)\n\t\t\t\t{\n\t\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t\t$m341_secondLetter = $m341_secondLetter + 1;\n\t\t\n\t\t\t\t\tif ($m341_secondLetter == 27)\n\t\t\t\t\t{\n\t\t\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\t\t\t$m341_firstLetter = $m341_firstLetter + 1;\n\t\t\t\t\t\t\n\t\t\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t\t\t$m341_secondLetter = 1;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\tif ($counter > 701 &&  $counter < 728)\n\t\t\t\t{\n\t\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\t\t$m341_firstLetter = 1;\n\t\t\t\t\t\n\t\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t\t$m341_secondLetter = 1;\n\t\t\t\t\t\n\t\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\t\t$m341_thirdLetter = $m341_thirdLetter + 1;\n\t\t\n\t\t\t\t\tif ($m341_thirdLetter == 27)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\t\t\t$m341_thirdLetter = 1;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\tif ($counter > 727)\n\t\t\t\t{\n\t\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\t\t$m341_thirdLetter = $m341_thirdLetter + 1;\n\t\t\n\t\t\t\t\tif ($m341_thirdLetter == 27)\n\t\t\t\t\t{\n\t\t\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t\t\t$m341_secondLetter = $m341_secondLetter + 1;\n\t\t\t\t\t\t\n\t\t\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\t\t\t$m341_thirdLetter = 1;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\trename ($m341_UserInput_Renamer + \"_high\"+ \"_\" + $alphabetArray[$m341_firstLetter] + $alphabetArray[$m341_secondLetter] + $alphabetArray[$m341_thirdLetter]);\n\t\t\t\t$counter = $counter + 1;\n\t\t\t}\n\t\t\tselect -clear;\n\t\t\tprint (\"Renamed: \" + $m341_UserInput_Renamer + \"\\n\");\n\t\t\tif ($ObjsSize > 1377)\n\t\t\t{\n\t\t\t\terror \"Alphabetical increment can only rename up to 1378 objects\";\n\t\t\t}\n\t\t}\n\t\t\n\t\telse\n\t\t{\n\t\t\tfor ($listHighItem = 0; $listHighItem < $listHighSize; ++$listHighItem)\n\t\t\t{\n\t\t\t\tselect $listHigh[$counter];\n\t\t\t\trename ($m341_UserInput_Renamer + \"_high\" + $reNamerDropDownArray[$reNamerDropDownIndex -1] + $increment);\n\t\t\t\t\n\t\t\t\t//Remove extra zero so names actually look good\n\t\t\t\tstring $REZ_Items[] = `ls -sl`;\n\t\t\t\t\n\t\t\t\t//Check _01 name for extra zero\n\t\t\t\tif ($reNamerDropDownIndex == 4)\n\t\t\t\t{\n\t\t\t\t\tif(`gmatch $REZ_Items[0] \"*_01\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_02\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_03\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_04\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_05\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_06\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_07\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_08\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_09\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero\n\t\t\t\t\telse\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_0\" \"_\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t//Check _001 name for extra zero\n\t\t\t\tif ($reNamerDropDownIndex == 5)\n\t\t\t\t{\n\t\t\t\t\tif(`gmatch $REZ_Items[0] \"*_001\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_002\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_003\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_004\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_005\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_006\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_007\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_008\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_009\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero\n\t\t\t\t\telse\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_00\" \"_0\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero 99-999\n\t\t\t\t\tstring $finalZeroTest[] = `ls -sl`;\n\t\t\t\t\t//Convert string array to string\n\t\t\t\t\t$objName = $finalZeroTest[0];\n\t\t\t\t\t//Strip off all but last 4 characters\n\t\t\t\t\tstring $endStr = endString($objName, 4);\n\t\t\t\t\t\n\t\t\t\t\tif(`gmatch $endStr \"0[1-9]*\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_0\" \"_\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero 999-9999\n\t\t\t\t\t$finalZeroTest = `ls -sl`;\n\t\t\t\t\t//Convert string array to string\n\t\t\t\t\t$objName = $finalZeroTest[0];\n\t\t\t\t\t//Strip off all but last 4 characters\n\t\t\t\t\t$endStr = endString($objName, 5);\n\t\t\t\t\t\n\t\t\t\t\tif(`gmatch $endStr \"0[1-9]*\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_0\" \"_\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t//Check _0001 name for extra zero\n\t\t\t\tif ($reNamerDropDownIndex == 6)\n\t\t\t\t{\n\t\t\t\t\tif(`gmatch $REZ_Items[0] \"*_0001\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0002\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0003\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0004\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0005\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0006\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0007\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0008\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0009\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero\n\t\t\t\t\telse\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_000\" \"_00\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero 99-999\n\t\t\t\t\t$finalZeroTest = `ls -sl`;\n\t\t\t\t\t//Convert string array to string\n\t\t\t\t\t$objName = $finalZeroTest[0];\n\t\t\t\t\t//Strip off all but last 4 characters\n\t\t\t\t\tstring $endStr = endString($objName, 4);\n\t\t\t\t\t\n\t\t\t\t\tif(`gmatch $endStr \"0[1-9]*\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_0\" \"_\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero 999-9999\n\t\t\t\t\t$finalZeroTest = `ls -sl`;\n\t\t\t\t\t//Convert string array to string\n\t\t\t\t\t$objName = $finalZeroTest[0];\n\t\t\t\t\t//Strip off all but last 5 characters\n\t\t\t\t\t$endStr = endString($objName, 5);\n\t\t\t\t\t\n\t\t\t\t\tif(`gmatch $endStr \"0[1-9]*\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_00\" \"_\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t//Store each newly named object so you can select it at the end\n\t\t\t\t$tempItem = `ls -sl -fl`;\n\t\t\t\tglobal string $m341_reNamer_finalSelectHigh[];\n\t\t\t\tselect $m341_reNamer_finalSelectHigh;\n\t\t\t\tselect -add $tempItem;\n\t\t\t\t$m341_reNamer_finalSelectHigh = `ls -sl -fl`;\n\t\t\t\t\n\t\t\t\t$increment = $increment + 1;\n\t\t\t\t$counter = $counter + 1;\n\t\t\t}\n\t\t}\n\t}\n\t\n\t//Select low list and add low name matching\n\tselect $found_Low;\n\tfor ($Item in $found_Low)\n\t{   \n\t\trenameSelectionList(\"namingFailed_matemp_1001\");\n\t}\n\t\n\t{\n\t\tstring $listLow[] = `ls -sl`;\n\t\tint $listLowSize = `size $listLow`;\n\t\t\n\t\tstring $Objs[] = `ls -sl`;\n\t\tint $ObjsSize = `size $Objs`;\n\t\tint $increment;\n\t\t//Start increment at zero if using LOD rename\n\t\tif ($reNamerDropDownIndex == 7)\n\t\t{\n\t\t\t$increment = 0;\n\t\t}\n\t\telse\n\t\t{\n\t\t\t$increment = 1;\n\t\t}\n\t\tstring $alphabetArray[] = {\"\", \"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\", \"J\", \"K\", \"L\", \"M\", \"N\", \"O\", \"P\", \"Q\", \"R\", \"S\", \"T\", \"U\", \"V\", \"W\", \"X\", \"Y\", \"Z\"};\n\t\tint $counter = 0;\n\t\tglobal int $m341_firstLetter;\n\t\t$m341_firstLetter = 0;\n\t\tglobal int $m341_secondLetter;\n\t\t$m341_secondLetter = 0;\n\t\tglobal int $m341_thirdLetter;\n\t\t$m341_thirdLetter = 0;\n\t\t\n\t\tif ($reNamerDropDownIndex == 1)\n\t\t{\n\t\t\tfor ($item = 0; $item < $ObjsSize; ++$item)\n\t\t\t{\n\t\t\t\tselect $Objs[$counter];\n\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t\n\t\t\t\tif ($counter < 27)\n\t\t\t\t{\n\t\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\t\t$m341_firstLetter = $m341_firstLetter + 1;\n\t\n\t\t\t\t\tif ($m341_firstLetter == 27)\n\t\t\t\t\t{\n\t\t\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\t\t\t$m341_firstLetter = 1;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\tif ($counter > 25 && $counter < 702)\n\t\t\t\t{\n\t\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t\t$m341_secondLetter = $m341_secondLetter + 1;\n\t\t\n\t\t\t\t\tif ($m341_secondLetter == 27)\n\t\t\t\t\t{\n\t\t\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\t\t\t$m341_firstLetter = $m341_firstLetter + 1;\n\t\t\t\t\t\t\n\t\t\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t\t\t$m341_secondLetter = 1;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\tif ($counter > 701 &&  $counter < 728)\n\t\t\t\t{\n\t\t\t\t\tglobal int $m341_firstLetter;\n\t\t\t\t\t$m341_firstLetter = 1;\n\t\t\t\t\t\n\t\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t\t$m341_secondLetter = 1;\n\t\t\t\t\t\n\t\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\t\t$m341_thirdLetter = $m341_thirdLetter + 1;\n\t\t\n\t\t\t\t\tif ($m341_thirdLetter == 27)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\t\t\t$m341_thirdLetter = 1;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\tif ($counter > 727)\n\t\t\t\t{\n\t\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\t\t$m341_thirdLetter = $m341_thirdLetter + 1;\n\t\t\n\t\t\t\t\tif ($m341_thirdLetter == 27)\n\t\t\t\t\t{\n\t\t\t\t\t\tglobal int $m341_secondLetter;\n\t\t\t\t\t\t$m341_secondLetter = $m341_secondLetter + 1;\n\t\t\t\t\t\t\n\t\t\t\t\t\tglobal int $m341_thirdLetter;\n\t\t\t\t\t\t$m341_thirdLetter = 1;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\trename ($m341_UserInput_Renamer + \"_low\"+ \"_\" + $alphabetArray[$m341_firstLetter] + $alphabetArray[$m341_secondLetter] + $alphabetArray[$m341_thirdLetter]);\n\t\t\t\t$counter = $counter + 1;\n\t\t\t}\n\t\t\tselect -clear;\n\t\t\tprint (\"Renamed: \" + $m341_UserInput_Renamer + \"\\n\");\n\t\t\tif ($ObjsSize > 1377)\n\t\t\t{\n\t\t\t\terror \"Alphabetical increment can only rename up to 1378 objects\";\n\t\t\t}\n\t\t}\n\t\t\n\t\telse\n\t\t{\n\t\t\tfor ($listLowItem = 0; $listLowItem < $listLowSize; ++$listLowItem)\n\t\t\t{\n\t\t\t\tselect $listLow[$counter];\n\t\t\t\t\n\t\t\t\trename ($m341_UserInput_Renamer + \"_low\" + $reNamerDropDownArray[$reNamerDropDownIndex -1] + $increment);\n\t\n\t\t\t\t//Remove extra zero so names actually look good\n\t\t\t\tstring $REZ_Items[] = `ls -sl`;\n\t\t\t\t\n\t\t\t\t//Check _01 name for extra zero\n\t\t\t\tif ($reNamerDropDownIndex == 4)\n\t\t\t\t{\n\t\t\t\t\tif(`gmatch $REZ_Items[0] \"*_01\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_02\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_03\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_04\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_05\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_06\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_07\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_08\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_09\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero\n\t\t\t\t\telse\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_0\" \"_\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t//Check _001 name for extra zero\n\t\t\t\tif ($reNamerDropDownIndex == 5)\n\t\t\t\t{\n\t\t\t\t\tif(`gmatch $REZ_Items[0] \"*_001\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_002\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_003\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_004\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_005\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_006\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_007\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_008\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_009\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero\n\t\t\t\t\telse\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_00\" \"_0\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero 99-999\n\t\t\t\t\t$finalZeroTest = `ls -sl`;\n\t\t\t\t\t//Convert string array to string\n\t\t\t\t\t$objName = $finalZeroTest[0];\n\t\t\t\t\t//Strip off all but last 4 characters\n\t\t\t\t\tstring $endStr = endString($objName, 4);\n\t\t\t\t\t\n\t\t\t\t\tif(`gmatch $endStr \"0[1-9]*\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_0\" \"_\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero 999-9999\n\t\t\t\t\t$finalZeroTest = `ls -sl`;\n\t\t\t\t\t//Convert string array to string\n\t\t\t\t\t$objName = $finalZeroTest[0];\n\t\t\t\t\t//Strip off all but last 4 characters\n\t\t\t\t\t$endStr = endString($objName, 5);\n\t\t\t\t\t\n\t\t\t\t\tif(`gmatch $endStr \"0[1-9]*\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_0\" \"_\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t//Check _0001 name for extra zero\n\t\t\t\tif ($reNamerDropDownIndex == 6)\n\t\t\t\t{\n\t\t\t\t\tif(`gmatch $REZ_Items[0] \"*_0001\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0002\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0003\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0004\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0005\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0006\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0007\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0008\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\telse if(`gmatch $REZ_Items[0] \"*_0009\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero\n\t\t\t\t\telse\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_000\" \"_00\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero 99-999\n\t\t\t\t\t$finalZeroTest = `ls -sl`;\n\t\t\t\t\t//Convert string array to string\n\t\t\t\t\t$objName = $finalZeroTest[0];\n\t\t\t\t\t//Strip off all but last 4 characters\n\t\t\t\t\tstring $endStr = endString($objName, 4);\n\t\t\t\t\t\n\t\t\t\t\tif(`gmatch $endStr \"0[1-9]*\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_0\" \"_\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t//Remove extra zero 999-9999\n\t\t\t\t\t$finalZeroTest = `ls -sl`;\n\t\t\t\t\t//Convert string array to string\n\t\t\t\t\t$objName = $finalZeroTest[0];\n\t\t\t\t\t//Strip off all but last 5 characters\n\t\t\t\t\t$endStr = endString($objName, 5);\n\t\t\t\t\t\n\t\t\t\t\tif(`gmatch $endStr \"0[1-9]*\"`)\n\t\t\t\t\t{\n\t\t\t\t\t\tsearchReplaceNames \"_00\" \"_\" \"selected\";\n\t\t\t\t\t}\n\t\t\t\t}\t\t\t\n\t\t\t\t\n\t\t\t\t//Store each newly named object so you can select it at the end\n\t\t\t\t$tempItem = `ls -sl -fl`;\n\t\t\t\tglobal string $m341_reNamer_finalSelectLow[];\n\t\t\t\tselect $m341_reNamer_finalSelectLow;\n\t\t\t\tselect -add $tempItem;\n\t\t\t\t$m341_reNamer_finalSelectLow = `ls -sl -fl`;\n\t\t\t\t\n\t\t\t\t$increment = $increment + 1;\n\t\t\t\t$counter = $counter + 1;\n\t\t\t}\n\t\t}\n\t}\n\t\n\tselect -clear;\n\t\n\t//Select newly named objects\n\tglobal string $m341_reNamer_finalSelectHigh[];\n\tselect $m341_reNamer_finalSelectHigh;\n\tglobal string $m341_reNamer_finalSelectLow[];\n\tselect -add $m341_reNamer_finalSelectLow;\n\t\n\tprint (\"Name matching complete: \" + $m341_UserInput_Renamer + \" high/low\\n\");\n}\n\n\n//***********************************************************************************************************************************************************\n//Window and Buttons\nglobal proc m341_reNamer_launchWindow()\n{\n\tif (`window -exists m341_reNamer_windowName`)\n\t{\n\t\tdeleteUI m341_reNamer_windowName;\n\t}\n\n\n\t//Colours\n\tfloat $r[] = {0.698, 0.259, 0.263};\n\tfloat $g[] = {0.282, 0.675, 0.282};\n\tfloat $b[] = {0.145, 0.463, 0.737};\n\tfloat $grey[] = {0.51, 0.51, 0.51};\n\tfloat $red[] = {0.70, 0.39, 0.34};\n\tfloat $orange[] = {0.761, 0.522, 0.314};\n\tfloat $yellow[] = {0.72, 0.68, 0.39};\n\tfloat $green[] = {0.34, 0.59, 0.47};\n\tfloat $greenYellow[] = {0.50, 0.67, 0.37};\n\tfloat $blue[] = {0.32, 0.59, 0.72};\n\tfloat $seafoam[] = {0.427, 0.643, 0.643};\n\tfloat $purple[] = {0.596, 0.529, 0.769};\n\tfloat $purpleDrank[] = {0.451, 0.529, 0.78};\n\n\tglobal string $m341_TextFieldName_Renamer = \"\";\n\tglobal string $m341_UserInput_Renamer = \"\";\n\tglobal string $m341_TextFieldName_RenamerReplace = \"\";\n\tglobal string $m341_UserInput_RenamerReplace = \"\";\n\tglobal string $m341_reNamer_Version;\n\t\n\twindow -title $m341_reNamer_Version -toolbox true -sizeable true -resizeToFitChildren true m341_reNamer_windowName;\n\tcolumnLayout -adjustableColumn true;\n\ttext -label \"by Malcolm341\";\n\t\n\tsetParent ..;\n\trowLayout -numberOfColumns 1 -columnAttach2 \"left\" \"left\" -columnOffset2 5 0 -columnWidth 1 50 -columnWidth 2 30;\n\t//Fix keyboard focus\n\t\n\tstring $mayaYear = `about -product`;\n\tstring $mayaYearAarray[];\n\t$mayaYearAarray = stringToStringArray($mayaYear, \" \");\n\tint $mayaVersionNumber = $mayaYearAarray[1];\n\t\n\tif ($mayaVersionNumber < 2019)\n\t{\n\t\ticonTextButton -style \"textOnly\"\n\t\t\t-labelOffset 30\n\t\t\t-label \"click for help\"\n\t\t\t-backgroundColor 0.51 0.51 0.51\n\t\t\t-width 130\n\t\t\t-height 15\n\t\t\t-command \"m341_reNamer_help;\";\n\t}\n\telse\n\t{\n\t\ticonTextButton -style \"textOnly\"\n\t\t\t-enableKeyboardFocus 1\n\t\t\t-labelOffset 30\n\t\t\t-label \"click for help\"\n\t\t\t-backgroundColor 0.51 0.51 0.51\n\t\t\t-width 130\n\t\t\t-height 15\n\t\t\t-command \"m341_reNamer_help;\";\n\t}\n\t\n\tsetParent ..;\n\trowColumnLayout -numberOfRows 1;\n\t\ticonTextButton -style \"textOnly\"\n\t\t-label \"sort outliner by name\"\n\t\t-backgroundColor $yellow[0] $yellow[1] $yellow[2]\n\t\t-width 130\n\t\t//-height 18\n\t\t-command \"m341_reNamer_sortOutliner;\"\n\t\t-commandRepeatable 1;\n\t\n\tsetParent ..;\n\trowColumnLayout -numberOfRows 1;\n\t\t$m341_TextFieldName_Renamer = `textField -placeholderText \"rename/search for:\" -width 130 -changeCommand \"m341_textValueChanged_Renamer();\"`;\n\t\t\n\tsetParent ..;\n\trowColumnLayout -numberOfRows 1;\n\ticonTextButton -style \"textOnly\"\n\t\t-label \"replace\"\n\t\t-labelOffset 30\n\t\t-backgroundColor 0.51 0.51 0.51\n\t\t-width 44\n\t\t-height 18\n\t\t-command \"m341_reNamer_replace;\"\n\t\t-commandRepeatable 0;\n\t\tseparator -width 1 -style \"none\";\n\t\t\n\t\t$m341_TextFieldName_RenamerReplace = `textField -placeholderText \"replace with:\" -width 85 -changeCommand \"m341_textValueChanged_RenamerReplace();\"`;\t\n\t\t\n\tsetParent ..;\n\trowColumnLayout -numberOfRows 1;\n\t\ticonTextButton -style \"textOnly\"\n\t\t-label \"pre\"\n\t\t-labelOffset 40\n\t\t-backgroundColor 0.596 0.529 0.769\n\t\t-width 22\n\t\t-command \"m341_reNamer_prefix;\"\n\t\t-commandRepeatable 0;\n\t\tseparator -width 1 -style \"none\";\n\t\t\n\t\ticonTextButton -style \"textOnly\"\n\t\t-label \"suf\"\n\t\t-labelOffset 40\n\t\t-backgroundColor 0.32 0.59 0.72\n\t\t-width 22\n\t\t-command \"m341_reNamer_suffix;\"\n\t\t-commandRepeatable 0;\n\t\tseparator -width 1 -style \"none\";\n\t\t\n\t\ticonTextButton -style \"textOnly\"\n\t\t-label \"TB name match\"\n\t\t-labelOffset 0\n\t\t-backgroundColor 0.34 0.59 0.47\n\t\t-width 84\n\t\t-command \"m341_reNamer_groupMatch;\"\n\t\t-commandRepeatable 0;\n\n\tsetParent ..;\t\n\trowColumnLayout -numberOfRows 1;\n\t\ttext \"  increment \";\n\t\toptionMenu -width 70 -height 19 reNamerDropDown;\n\t\tmenuItem -label \"_A\";\n\t\tmenuItem -label \"1\";\n\t\tmenuItem -label \"_1\";\n\t\tmenuItem -label \"_01\";\n\t\tmenuItem -label \"_001\";\n\t\tmenuItem -label \"_0001\";\n\t\tmenuItem -label \"_LOD_0\";\n\t\toptionMenu -edit -select 4 reNamerDropDown;\n\t\t\n\tsetParent ..;\t\n\trowColumnLayout -numberOfRows 1;\n\t\ticonTextButton -style \"textOnly\"\n\t\t-label \"rename\"\n\t\t//-backgroundColor 0.70 0.39 0.34\n\t\t-backgroundColor 0.772 0.521 0.302\n\t\t-width 130\n\t\t-command \"m341_reNamer_rename;\"\n\t\t-commandRepeatable 0;\n\t\t\n\tshowWindow;\n\t\n\tprint (\"Toolbox loaded \" + $m341_reNamer_Version + \"\\n\");\n}\nm341_reNamer_launchWindow();\n" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "modelChecker" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "modelChecker" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "MOD" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "pythonFamily.png" 
+        -image1 "pythonFamily.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from modelChecker import modelChecker_UI\n\nmodelChecker_UI.UI.show_UI()" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Resets the selected object's pivot to center" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Center Pivot" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "CP" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "menuIconModify.png" 
+        -image1 "menuIconModify.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "CenterPivot" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Select an object(s)" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Freeze Transformations" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "FT" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "FreezeTransform.png" 
+        -image1 "FreezeTransform.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "FreezeTransformations" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Delete construction history on the selected object(s)" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "History" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Hist" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "trash.png" 
+        -image1 "trash.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "DeleteHistory" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Match the transforms of selected objects to the last-selected object." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Match All Transforms" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "MATCH" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "menuIconModify.png" 
+        -image1 "menuIconModify.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "MatchTransform" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "modelChecker 0.1.4" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "modelChecker" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "GEO" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "checkboxOn.png" 
+        -image1 "checkboxOn.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from modelChecker import modelChecker_UI\n\nmodelChecker_UI.UI.show_UI()" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Disables All LRAs in the scene" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "LRALL" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "LRALL" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "menuIconDisplay.png" 
+        -image1 "menuIconDisplay.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\n\ndef disableLocalRotationAxis():\n\n    \"\"\"Disables LRAs for every node that has it.\"\"\"\n\n    dag_objects = cmds.ls(dag=1)\n    \n    for obj in dag_objects:\n        if cmds.objExists(obj+\".displayLocalAxis\"):\n            cmds.setAttr(obj+\".displayLocalAxis\", 0)\n\ndisableLocalRotationAxis()" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Toggle local rotation axis visibility" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Local Rotation Axes" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "LRA" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "menuIconDisplay.png" 
+        -image1 "menuIconDisplay.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "ToggleLocalRotationAxes" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Customize the joint scale" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Joint Size..." 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "JS" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "menuIconDisplay.png" 
+        -image1 "menuIconDisplay.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "JdsWin" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Display and edit relationships among nodes of the scene" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Node Editor" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "NE" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "menuIconWindow.png" 
+        -image1 "menuIconWindow.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "NodeEditorWindow" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Resets the controller position" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "RESET_CTRLS" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "RESET" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "buttonManip.svg" 
+        -image1 "buttonManip.svg" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.api import OpenMaya as om2\n\n\ndef reset_transforms_and_user_attrs(mfn_node: om2.MFnDependencyNode):\n    \"\"\"Resets the animation attributes for the given node\n\n    Args:\n        mfn_node (om2.MFnDependencyNode / om2.MFnDagNode): The node on which to reset the attributes\n    \"\"\"\n    # Iterate over every attribute\n    attrs_list = [om2.MFnAttribute(mfn_node.attribute(i)) for i in range(mfn_node.attributeCount())]\n\n    # Eliminate some attributes\n    for attr in attrs_list:\n        if not attr.writable or not attr.keyable or attr.hidden:\n            continue\n\n        # Remove all of the default value attributes\n        mplug = om2.MPlug(mfn_node.object(), attr.object())\n        if \"-1\" in mplug.name() or mplug.isDefaultValue() or mplug.isLocked:\n            continue\n\n        default = cmds.attributeQuery(attr.name, node=mfn_node.uniqueName(), listDefault=True)\n        cmds.setAttr(mplug.name(), default[0] if len(default) > 0 else 0)\n\n\n# Get the selection\nmsel = om2.MGlobal.getActiveSelectionList()\n\n# Iterate over every node\nfor i in range(msel.length()):\n    mob = msel.getDependNode(i)\n    if mob.apiType() == 107:\n        node = om2.MFnDagNode(mob)\n    else:\n        node = om2.MFnDependencyNode(mob)\n\n    reset_transforms_and_user_attrs(mfn_node=node)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Click to place joint, click on existing joint to add to skeleton, click/drag to position joint" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Create Joints" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "kinJoint.png" 
+        -image1 "kinJoint.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "JointTool" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Quick Joint" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "quickJoint" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "QUICK" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "kinJoint.png" 
+        -image1 "kinJoint.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "cmds.joint()" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Select a joint to orient" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Orient Joint" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "ORIENT" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "orientJoint.png" 
+        -image1 "orientJoint.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "joint -e  -oj xyz -secondaryAxisOrient yup -ch -zso" 
+        -sourceType "mel" 
+        -doubleClickCommand "OrientJointOptions;" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "quickLocator" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "quickLocator" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "QUICK" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "locator.png" 
+        -image1 "locator.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "cmds.spaceLocator()" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Creates and snaps locators to selections" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "SNAP_LOC" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "SNAP" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "locator.svg" 
+        -image1 "locator.svg" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "import maya.cmds as cmds\n\nsel = cmds.ls(sl=1)\n\nfor i in sel:\n    loc = cmds.spaceLocator(p=(0, 0, 0))\n    cmds.matchTransform(loc, i)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Helps you create controllers for rigging" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "CTRLS" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "CTRL" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "circle.png" 
+        -image1 "circle.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "# ------------------------------------------------------------------------------------------\n#\n# ------------------  Controller Creation Script v1.8 by Elio Molinaro  --------------------\n#\n# ------------------------------------------------------------------------------------------\n\nimport maya.cmds as cmds\nimport maya.mel as mm\n\n# Setting Constants\nGREY = 3\nBLACK = 2\nBLUE = 7\nMAGENTA = 10\nRED = 14\nGREEN = 15\nWHITE = 16\nYELLOW = 18\nTURQUOISE = 19\n\nTRIANGLE_POINTS = \"curve -d 1 -p -0.681886 0 -1.241162 -p 1.318114 0 0 -p -0.681886 0 1.241162 -p -0.681886 0 -1.241162 -k 0 -k 1 -k 2 -k 3 ;\"\nCUBE_POINTS = \"curve -d 1 -p 1 1 1 -p -1 1 1 -p -1 1 -1 -p 1 1 -1 -p 1 1 1 -p 1 -1 1 -p 1 -1 -1 -p 1 1 -1 -p -1 1 -1 -p -1 -1 -1 -p -1 -1 1 -p -1 1 1 -p -1 -1 1 -p 1 -1 1 -p 1 -1 -1 -p -1 -1 -1 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 ;\"\nCROSS_POINTS = \"curve -d 1 -p -0.414 0 0.414 -p -1.242 0 0.414 -p -1.242 0 -0.414 -p -0.414 0 -0.414 -p -0.414 0 -1.242 -p 0.414 0 -1.242 -p 0.414 0 -0.414 -p 1.242 0 -0.414 -p 1.242 0 0.414 -p 0.414 0 0.414 -p 0.414 0 1.242 -p -0.414 0 1.242 -p -0.414 0 0.414 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 ;\"\nROTATE_POINTS = \"curve -d 1 -p 0 0 -1.17 -p 0 0 -1.56 -p 0.399338 0 -1.506031 -p 0.793524 0 -1.338937 -p 1.103095 0 -1.103096 -p 1.345836 0 -0.784469 -p 1.499466 0 -0.417871 -p 1.560012 0 0 -p 1.506349 0 0.396973 -p 1.350447 0 0.777635 -p 1.103095 0 1.103095 -p 0.787278 0 1.343696 -p 0.403326 0 1.505491 -p 0.00914653 0 1.558776 -p -0.397476 0 1.506282 -p -0.771739 0 1.352889 -p -1.102027 0 1.103909 -p -1.349955 0 0.778822 -p -1.504247 0 0.406328 -p -1.560012 0 0 -p -1.972908 0 0 -p -1.357046 0 -1.231723 -p -0.741184 0 0 -p -1.170009 0 0 -p -1.1249 0 0.312677 -p -1.0035 0 0.596066 -p -0.829628 0 0.824294 -p -0.592335 0 1.006342 -p -0.321045 0 1.121435 -p 0.00996931 0 1.168661 -p 0.31291 0 1.124804 -p 0.584563 0 1.012264 -p 0.827321 0 0.827321 -p 1.014637 0 0.578876 -p 1.130714 0 0.290688 -p 1.169318 0 -0.00511019 -p 1.129118 0 -0.302495 -p 1.012303 0 -0.584511 -p 0.816803 0 -0.835335 -p 0.585095 0 -1.011857 -p 0.309292 0 -1.126304 -p 0 0 -1.17 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 -k 41 ;\"\nSQUARE_POINTS = \"curve -d 1 -p 1 0 -1 -p 1 0 1 -p -1 0 1 -p -1 0 -1 -p 1 0 -1 -k 0 -k 1 -k 2 -k 3 -k 4 ;\"\nPOLE_POINTS = \"curve -d 1 -p 0.622376 -0.656174 0.622376 -p 0.622376 -0.656174 -0.622376 -p -0.622376 -0.656174 -0.622376 -p -0.622376 -0.656174 0.622376 -p 0.622376 -0.656174 0.622376 -p 0 1.112776 0 -p -0.622376 -0.656174 0.622376 -p -0.622376 -0.656174 -0.622376 -p 0 1.112776 0 -p 0.622376 -0.656174 -0.622376 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 ;\"\nARROW_POINTS = \"curve -d 1 -p -0.5214 0 0.5214 -p -1.056 0 0.363 -p -0.99 0 0.66 -p -1.65 0 0 -p -0.99 0 -0.66 -p -1.056 0 -0.363 -p -0.5214 0 -0.5214 -p -0.363 0 -1.056 -p -0.66 0 -0.99 -p 0 0 -1.65 -p 0.66 0 -0.99 -p 0.363 0 -1.056 -p 0.5214 0 -0.5214 -p 1.056 0 -0.363 -p 0.99 0 -0.66 -p 1.65 0 0 -p 0.99 0 0.66 -p 1.056 0 0.363 -p 0.5214 0 0.5214 -p 0.363 0 1.056 -p 0.66 0 0.99 -p 0 0 1.65 -p -0.66 0 0.99 -p -0.363 0 1.056 -p -0.5214 0 0.5214 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 ;\"\n\n\n# Setting Variables\nbutton = False\n\n\n# -------------------------------------------------------------------------------------------------------\n# Main Functions\n\n\ndef colourChange():\n    # Get user selection\n    user_sel = cmds.ls(sl=True)\n    if len(user_sel) != 0:\n        user_sel_shapes = cmds.listRelatives(user_sel, shapes=True)\n\n        if user_sel_shapes is not None:\n            for i in user_sel_shapes:\n                colour_value = cmds.colorIndexSliderGrp(colour_slider, query=True, value=True) - 1\n                cmds.setAttr(i + \".overrideEnabled\", 1)\n                cmds.setAttr(i + \".overrideColor\", colour_value)\n\n\ndef thicknessChange(*args):\n    # Get user selection\n    user_sel = cmds.ls(sl=True)\n    if len(user_sel) != 0:\n        user_sel_shapes = cmds.listRelatives(user_sel, shapes=True)\n        if user_sel_shapes is not None:\n            if cmds.nodeType(user_sel_shapes[0]) == \"nurbsCurve\":\n                for i in user_sel_shapes:\n                    thickness_value = cmds.floatSlider(thickness_slider, query=True, value=True)\n                    cmds.setAttr(i + \".lineWidth\", thickness_value)\n\n\ndef scaleChange(*args):\n    global user_sel\n\n    # Get user selection\n    user_sel = cmds.ls(sl=True)\n    user_sel_shapes = cmds.listRelatives(shapes=True)\n\n    if user_sel_shapes is not None:\n        for i in user_sel_shapes:\n            if cmds.nodeType(i) != \"nurbsCurve\":\n                cmds.error(\"Please only select NURBS curves\")\n\n        scale_value = cmds.floatSlider(scale_slider, query=True, value=True)\n        cmds.scale(scale_value, scale_value, scale_value)\n\n\ndef deleteHistory(*args):\n    global user_sel\n\n    for i in user_sel:\n        cmds.makeIdentity(i, apply=True, scale=1)\n        cmds.delete(i, ch=True)\n\n\ndef createControl(*args):\n    # Check if selection is empty\n    user_sel = cmds.ls(sl=True)\n\n    if len(user_sel) == 0:\n        selection_empty = True\n    elif len(user_sel) != 1:\n        cmds.error(\"Please select only one object to match the controller to\")\n    else:\n        selection_empty = False\n\n    # Handling menu variable\n    if cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Cube\":\n        control_type = CUBE_POINTS\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Arrow\":\n        control_type = ARROW_POINTS\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Pole\":\n        control_type = POLE_POINTS\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Square\":\n        control_type = SQUARE_POINTS\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Triangle\":\n        control_type = TRIANGLE_POINTS\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Rotate\":\n        control_type = ROTATE_POINTS\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Cross\":\n        control_type = CROSS_POINTS\n\n    # Handling text field variable\n    if len(cmds.textField(text_field, query=True, text=True)) == 0:\n        control_name = \"tempName\"\n    else:\n        control_name = cmds.textField(text_field, query=True, text=True)\n\n    # Create controllers\n    if cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Circle\":\n        control = cmds.circle(name=f\"{control_name}_ctrl\", normal=[0, 1, 0])[0]\n        cmds.delete(control, ch=1)\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Pin\":\n        control = cmds.circle(name=f\"{control_name}_ctrl\", normal=[0, 1, 0])[0]\n        base_shape = cmds.listRelatives(control, s=1)[0]\n        line = mm.eval(\"curve -d 3 -p 0 0 1 -p 0 0 1.997968 -p 0 0 2.995935 -p 0 0 3.993903 -k 0 -k 0 -k 0 -k 1 -k 1 -k 1 ;\")\n        line_shape = cmds.listRelatives(line, s=1)[0]\n        line_shape = cmds.rename(line_shape, base_shape + \"1\")\n        cmds.parent(line_shape, control, r=1, s=1)\n        cmds.delete(line)\n        cmds.setAttr(f\"{control}.translateZ\", -4)\n        cmds.select(control)\n        mm.eval(f\"move -rpr 0 0 -0.00609708 {control_name}_ctrl.scalePivot ctrl_{control_name}.rotatePivot ;\")\n        cmds.setAttr(f\"{control}.rotateX\", 90)\n        cmds.setAttr(f\"{control}.scaleX\", 0.5)\n        cmds.setAttr(f\"{control}.scaleY\", 0.5)\n        cmds.setAttr(f\"{control}.scaleZ\", 0.5)\n        cmds.makeIdentity(control, a=1)\n        cmds.delete(control, ch=1)\n    else:\n        control = mm.eval(control_type)\n        cmds.move(0, 0, 0, f\"{control}.scalePivot\", f\"{control}.rotatePivot\", absolute=True)\n        control = cmds.rename(control, f\"{control_name}_ctrl\")\n\n    # Orient the control to X\n    cmds.xform(control, rotation=(0, 0, 90))\n    cmds.makeIdentity(control, apply=True)\n\n    # Create offset group(s)\n    if cmds.checkBox(\"double_offsets\", query=True, value=True) is True:\n        offset_group = cmds.group(em=1, name=f\"{control_name}_srtBuffer001\")\n        offset_group2 = cmds.group(em=1, name=f\"{control_name}_srtBufferNeg\")\n        cmds.parent(control, offset_group2)\n        mult = cmds.createNode(\"multiplyDivide\", name=control.replace(\"_ctrl\", \"_negMult\"))\n        cmds.setAttr(f\"{mult}.input2\", -1, -1, -1)\n        cmds.connectAttr(f\"{control}.translate\", f\"{mult}.input1\")\n        cmds.connectAttr(f\"{mult}.output\", f\"{offset_group2}.translate\")\n        cmds.parent(offset_group2, offset_group)\n    else:\n        offset_group = cmds.group(em=1, name=f\"{control_name}_srtBuffer\")\n        cmds.parent(control, offset_group)\n\n    # Match transform if an object is selected\n    if selection_empty is False:\n        cmds.matchTransform(offset_group, user_sel)\n\n    # Set colour and thickness\n    colour_value = cmds.colorIndexSliderGrp(colour_slider, query=True, value=True) - 1\n    thickness_value = cmds.floatSlider(thickness_slider, query=True, value=True)\n\n    control_shape = cmds.listRelatives(control, shapes=True)\n    control_shape = control_shape[0]\n\n    cmds.setAttr(control_shape + \".overrideEnabled\", 1)\n    cmds.setAttr(control_shape + \".overrideColor\", colour_value)\n    cmds.setAttr(control_shape + \".lineWidth\", thickness_value)\n\n    # Remove the Renderman attributes of the curve if the plugin is loaded\n    renderman_loaded = cmds.pluginInfo(\"RenderMan_for_Maya.py\", q=1, loaded=1)\n    if renderman_loaded is True:\n        rmanAttrsHide(control)\n\n    cmds.select(clear=True)\n\n\ndef replaceControl(*args):\n    # Check if selection is empty\n    user_sel = cmds.ls(sl=True)\n    if len(user_sel) != 1:\n        cmds.error(\"Please select only one controller to replace\")\n\n    user_sel_shape = cmds.listRelatives(user_sel, shapes=1)\n    shape_name = f\"{user_sel[0]}Shape\"\n\n    # Handling menu variable\n    if cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Cube\":\n        control_type = CUBE_POINTS\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Arrow\":\n        control_type = ARROW_POINTS\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Pole\":\n        control_type = POLE_POINTS\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Square\":\n        control_type = SQUARE_POINTS\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Triangle\":\n        control_type = TRIANGLE_POINTS\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Rotate\":\n        control_type = ROTATE_POINTS\n    elif cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Cross\":\n        control_type = CROSS_POINTS\n\n    # Create controllers\n    control_name = \"TEMP_DEL\"\n    if cmds.optionMenu(\"style_menu\", q=True, v=True) == \"Circle\":\n        control = cmds.circle(name=f\"{control_name}_ctrl\", normal=[0, 1, 0])[0]\n        cmds.delete(control, ch=1)\n    else:\n        control = mm.eval(control_type)\n        cmds.move(0, 0, 0, f\"{control}.scalePivot\", f\"{control}.rotatePivot\", absolute=True)\n        control = cmds.rename(control, f\"{control_name}_ctrl\")\n\n    # Orient the control to X\n    cmds.xform(control, rotation=(0, 0, 90))\n    cmds.makeIdentity(control, apply=True)\n\n    # Create offset group\n    offset_group = cmds.group(em=1, name=f\"{control_name}_srtBuffer\")\n    cmds.parent(control, offset_group)\n\n    # Match transform\n    cmds.matchTransform(offset_group, user_sel)\n\n    # Set colour and thickness\n    colour_value = cmds.colorIndexSliderGrp(colour_slider, query=True, value=True) - 1\n    thickness_value = cmds.floatSlider(thickness_slider, query=True, value=True)\n\n    control_shape = cmds.listRelatives(control, shapes=True)\n    control_shape = control_shape[0]\n\n    cmds.setAttr(control_shape + \".overrideEnabled\", 1)\n    cmds.setAttr(control_shape + \".overrideColor\", colour_value)\n    cmds.setAttr(control_shape + \".lineWidth\", thickness_value)\n\n    # Create the replacing behaviour\n    cmds.delete(user_sel_shape)\n    cmds.parent(control_shape, user_sel, r=1, s=1)\n    cmds.delete(offset_group)\n    cmds.rename(control_shape, shape_name)\n\n    cmds.select(cl=1)\n\n\ndef rmanAttrsHide(controller):\n    cmds.setAttr(f\"{controller}.rman_matteObject\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_holdout\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_nestedInstancing\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_maxDiffuseDepth\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_maxSpecularDepth\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_relativePixelVariance\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_intersectPriority\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_visibilityCamera\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_visibilityIndirect\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_visibilityTransmission\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_motionSamples\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_renderCurve\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_curveBaseWidth\", lock=1, keyable=0, channelBox=0)\n    cmds.setAttr(f\"{controller}.rman_curveTipWidth\", lock=1, keyable=0, channelBox=0)\n\n\n# -------------------------------------------------------------------------------------------------------\n# Create UI\n\n\ndef controllerCreatorUI():\n    # Define global variables\n    global text_field\n    global type_menu\n    global colour_slider\n    global thickness_slider\n    global scale_slider\n\n    # Check if window already exists and deletes it\n    if cmds.window(\"controllerCreatorUI\", ex=True):\n        cmds.deleteUI(\"controllerCreatorUI\")\n\n    # Create window\n    window = cmds.window(\"controllerCreatorUI\", title=\"Controller Creator v1.8\", w=230, h=300, mnb=False, mxb=False, sizeable=False)\n\n    # Create main Layout\n    main_layout = cmds.formLayout(nd=100)\n\n    # Create Title\n    title = cmds.text(label=\"Controller Creator\", font=\"boldLabelFont\")\n\n    # Create Separators\n    separator_01 = cmds.separator(h=5, style=\"shelf\")\n    separator_02 = cmds.separator(h=5, style=\"none\")\n    separator_03 = cmds.separator(h=5, style=\"in\")\n    separator_04 = cmds.separator(h=5, style=\"none\")\n    separator_05 = cmds.separator(h=5, style=\"none\")\n\n    # Create Controller Style Menu\n    type_menu = cmds.optionMenu(\"style_menu\", label=\"Controller Style\", h=20, ann=\"What shape do you want for your controller?\")\n\n    cmds.menuItem(label=\"Circle\")\n    cmds.menuItem(label=\"Cube\")\n    cmds.menuItem(label=\"Arrow\")\n    cmds.menuItem(label=\"Pole\")\n    cmds.menuItem(label=\"Pin\")\n    cmds.menuItem(label=\"Cross\")\n    cmds.menuItem(label=\"Square\")\n    cmds.menuItem(label=\"Rotate\")\n    cmds.menuItem(label=\"Triangle\")\n\n    # Create Object Name Writing Field\n    text_field = cmds.textField(pht=\"Object Name\", w=50)\n\n    # Create double offset checkbox\n    checkbox = cmds.checkBox(\"double_offsets\", value=False, label=\"Facial Double Offsets + Neg\", annotation=\"Create two offset transforms instead of 1\")\n\n    # Create Colour Slider\n    colour_slider = cmds.colorIndexSliderGrp(ann=\"What colour do you want your controller to be?\", max=31, min=1, value=1, changeCommand=colourChange, label=\"Controller Colour\")\n\n    # Create Thickness Slider\n    thickness_slider = cmds.floatSlider(ann=\"How thick do you want your controller to be?\", max=10, min=1, value=1, step=0.5, w=50, dragCommand=thicknessChange)\n\n    # Create Scale Slider\n    scale_slider = cmds.floatSlider(ann=\"What size do you want your controller to be?\", max=5, min=0.1, value=1, step=0.2, w=50, dragCommand=scaleChange, changeCommand=deleteHistory)\n\n    # Create Buttons\n    button = cmds.button(label=\"CREATE\", command=createControl, ann=\"Create the controller\")\n    replace_button = cmds.button(label=\"REPLACE\", command=replaceControl, ann=\"Replace the current controller shape by a new one\")\n\n    # Create Missing Titles\n    object_name_title = cmds.text(label=\"Object Name\")\n    thickness_slider_title = cmds.text(label=\"Controller Thickness\")\n    scale_slider_title = cmds.text(label=\"Controller Scale\")\n\n    # Adjust Layout\n    cmds.formLayout(\n        main_layout,\n        edit=True,\n        attachForm=[\n            (title, \"top\", 10),\n            (title, \"left\", 5),\n            (title, \"right\", 5),\n            (separator_01, \"left\", 5),\n            (separator_01, \"right\", 5),\n            (separator_02, \"left\", 5),\n            (separator_02, \"right\", 5),\n            (separator_03, \"left\", 5),\n            (separator_03, \"right\", 5),\n            (separator_04, \"left\", 5),\n            (separator_04, \"right\", 5),\n            (separator_05, \"left\", 5),\n            (separator_05, \"right\", 5),\n            (type_menu, \"left\", 60),\n            (type_menu, \"right\", 60),\n            (text_field, \"left\", 145),\n            (text_field, \"right\", 59),\n            (checkbox, \"left\", 140),\n            (object_name_title, \"left\", 60),\n            (colour_slider, \"left\", -30),\n            (colour_slider, \"right\", 20),\n            (thickness_slider, \"left\", 130),\n            (thickness_slider, \"right\", 25),\n            (scale_slider, \"left\", 130),\n            (scale_slider, \"right\", 25),\n            (button, \"left\", 5),\n            (button, \"bottom\", 5),\n            (replace_button, \"right\", 5),\n            (replace_button, \"bottom\", 5),\n        ],\n        attachControl=[\n            (separator_01, \"top\", 10, title),\n            (type_menu, \"top\", 20, separator_01),\n            (separator_02, \"top\", 5, type_menu),\n            (text_field, \"top\", 5, separator_02),\n            (object_name_title, \"top\", 5, separator_02),\n            (checkbox, \"top\", 15, text_field),\n            (separator_03, \"top\", 15, checkbox),\n            (colour_slider, \"top\", 15, separator_03),\n            (separator_04, \"top\", 5, colour_slider),\n            (thickness_slider, \"top\", 5, separator_04),\n            (thickness_slider_title, \"top\", 5, separator_04),\n            (separator_05, \"top\", 5, thickness_slider),\n            (scale_slider, \"top\", 5, separator_05),\n            (scale_slider_title, \"top\", 5, separator_05),\n            (button, \"top\", 20, scale_slider),\n            (replace_button, \"top\", 20, scale_slider),\n            (replace_button, \"left\", 5, button),\n        ],\n        attachPosition=[(thickness_slider_title, \"left\", 20, 0), (scale_slider_title, \"left\", 20, 0), (button, \"right\", 10, 52)],\n    )\n\n    # Show the window\n    cmds.showWindow(window)\n\n\ncontrollerCreatorUI()\n" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Replace control shapes" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Replace shapes" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "REPL" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "circle.png" 
+        -image1 "circle.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from erf.core import api\n\nsel = cmds.ls(sl=1)\n\nif len(sel) != 2:\n    raise RuntimeError(\"You need to select only two nodes, the source control, and the target control\")\n\nsource_ctrl = api.DagNode(sel[0], create=False)\nsource_duplicate = api.DagNode(cmds.duplicate(source_ctrl, fullPath=True)[0], create=False)\ntarget_ctrl = api.DagNode(sel[1], create=False)\n\nsource_shapes = source_duplicate.shapes\ntarget_shapes = target_ctrl.shapes\nfor i in target_shapes:\n    i.delete()\n\nfor i, shape in enumerate(source_shapes):\n    shape.parent = target_ctrl\n    shape.name = f\"{target_ctrl.name}Shape\" if i == 0 else f\"{target_ctrl.name}Shape{i}\"\n\nsource_duplicate.delete()" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Craete a quick attribute separator" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "QUICK_ATTR_SEP" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "SEP" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "linearLight.closed.svg" 
+        -image1 "linearLight.closed.svg" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "#------------------------------------------------------------------------------------------\n#\n#---------------  Quick Attribute Separator Script v1.0 by Elio Molinaro  -----------------\n#\n#------------------------------------------------------------------------------------------\n\nimport maya.cmds as cmds\n\n\n# Main Function\ndef quickAttribute(separator_name):\n\n    # Get user selection\n    controller = cmds.ls(sl=1)\n\n    if len(controller) != 1:\n        cmds.error('Please select only one controller')\n    else:\n        controller = controller[0]\n\n    # Create the attribute\n    long_name = separator_name.replace(' ', '_')\n    attribute = cmds.addAttr(controller, at='enum', ln=long_name, nn=f'____{separator_name}____', enumName='____________')\n    cmds.setAttr(f'{controller}.{long_name}', cb=1)\n\n\ndef quickAttributeUI():\n\n    global separator_name\n\n    result = cmds.promptDialog(\n        title='Quick Attribute Separator',\n        message='Separator Name:',\n        button=['OK', 'Cancel'],\n        defaultButton='OK',\n        cancelButton='Cancel',\n        dismissString='Cancel')\n\n    if result == 'OK':\n        separator_name = cmds.promptDialog(query=True, text=True)\n\n        quickAttribute(separator_name)\n\n\nquickAttributeUI()" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "AttrPrimer" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Create Attr" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "ATTR" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "pythonFamily.png" 
+        -image1 "pythonFamily.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya import mel as mm\nfrom maya import OpenMayaUI as omui\n\nfrom PySide2 import QtWidgets, QtCore, QtGui\nfrom shiboken2 import wrapInstance\n\n\n# LOGIC ---------------------------------------------------------------------\n\nATTRIBUTE_TYPES = {\n\n    \"bool\": {\"description\": \"boolean\",\n            \"has_min_max\": False,\n            \"use_dt\": False},\n\n    \"long\": {\"description\": \"32 bit integer\",\n            \"has_min_max\": True,\n            \"use_dt\": False},\n\n    \"short\": {\"description\": \"16 bit integer\",\n            \"has_min_max\": True,\n            \"use_dt\": False},\n\n    \"byte\": {\"description\": \"8 bit integer\",\n            \"has_min_max\": True,\n            \"use_dt\": False},\n\n    \"char\": {\"description\": \"char\",\n            \"has_min_max\": False,\n            \"use_dt\": False},\n\n    \"enum\": {\"description\": \"enum\",\n            \"has_min_max\": False,\n            \"use_dt\": False},\n\n    \"\\\"float\\\"\": {\"description\": \"float\",\n                \"has_min_max\": True,\n                \"use_dt\": False},\n\n    \"double\": {\"description\": \"double\",\n            \"has_min_max\": True,\n            \"use_dt\": False},\n\n    \"doubleAngle\": {\"description\": \"angle value\",\n                    \"has_min_max\": True,\n                    \"use_dt\": False},\n\n    \"doubleLinear\": {\"description\": \"linear value\",\n                    \"has_min_max\": True,\n                    \"use_dt\": False},\n\n    \"\\\"string\\\"\": {\"description\": \"string\",\n                \"has_min_max\": False,\n                \"use_dt\": True},\n\n    \"stringArray\": {\"description\": \"array of strings\",\n                    \"has_min_max\": False,\n                    \"use_dt\": True},\n\n    \"compound\": {\"description\": \"compound\",\n                \"has_min_max\": False,\n                \"use_dt\": False},\n\n    \"message\": {\"description\": \"message (no data)\",\n                \"has_min_max\": False,\n                \"use_dt\": False},\n    \n    \"time\": {\"description\": \"time\",\n            \"has_min_max\": False,\n            \"use_dt\": False},\n\n    \"\\\"matrix\\\"\": {\"description\": \"4x4 double matrix\",\n                \"has_min_max\": False,\n                \"use_dt\": True},\n\n    \"fltMatrix\": {\"description\": \"4x4 float matrix\",\n                \"has_min_max\": False,\n                \"use_dt\": False}\n} \n\n\nclass MayaAttribute():\n\n    def __init__(self, \n                 long_name: str,\n                 attribute_type: str,\n                 min_value=None, \n                 max_value=None, \n                 soft_limits=False,\n                 keyable=False,\n                 multi_attr=False):\n        \n        # Initialise variables\n        self.long_name = long_name\n        self.attribute_type = attribute_type\n        self.min_value = float(min_value) if len(min_value) != 0 else None\n        self.max_value = float(max_value) if len(max_value) != 0 else None\n        self.soft_limits = soft_limits\n        self.keyable = keyable\n        self.multi_attr = multi_attr\n        self.attribute_data = ATTRIBUTE_TYPES.get(self.attribute_type)\n\n\n        # Validity checks\n        if attribute_type not in list(ATTRIBUTE_TYPES):\n            raise ValueError(\"The desired attribute type isn't valid or supported\")\n\n        if min_value and max_value:\n            if min_value > max_value:\n                raise ValueError(\"The minimum value is larger than the maximum value\")\n\n\n    def addAttr(self,\n                obj: str):\n        \n        use_dt = self.attribute_data.get(\"use_dt\")\n        at_dt = \"dt\" if use_dt else \"at\"\n        has_min_max = self.attribute_data.get(\"has_min_max\")\n        \n        command = f\"addAttr -ln \\\"{self.long_name}\\\" -{at_dt} {self.attribute_type} -k {int(self.keyable)}\"\n\n        if has_min_max:\n            if self.soft_limits:\n                if self.min_value:\n                    command += f\" -smn {self.min_value} -dv {self.min_value}\"\n                if self.max_value:\n                    command += f\" -smx {self.max_value}\"\n            else:\n                if self.min_value:\n                    command += f\" -min {self.min_value}\"\n                if self.max_value:\n                    command += f\" -max {self.max_value}\"\n\n        if self.multi_attr:\n            command += \" -m\"\n\n\n        # Execute the command\n        cmds.select(obj)\n        mm.eval(command)\n\n        return command\n\n\n# UI ------------------------------------------------------------------------\n\ndef getMayaMainWindow():\n    \"\"\"Gets the QMainWindow instance used by Maya for its main window\n\n    Args:\n        None\n\n    Returns:\n        QMainWindow: the QMainWindow instance used by Maya for its main window\n    \"\"\"\n\n    # Get a pointer to the Maya main window\n    main_window_ptr = omui.MQtUtil.mainWindow()\n    # Return the QMainWindow instance used by Maya for its main window\n    return wrapInstance(int(main_window_ptr), QtWidgets.QMainWindow)\n\n\nclass HLine(QtWidgets.QFrame):\n\n    def __init__(self):\n        # Initialise our class inheritance\n        super(HLine, self).__init__()\n\n        # Set the QFrame style options to make it a line resembling Maya UI\n        self.setFrameShape(self.HLine)\n        self.setFrameShadow(self.Plain)\n\n\nclass NumericLineEdit(QtWidgets.QLineEdit):\n\n    def __init__(self):\n        # Initialise our class inheritance\n        super(NumericLineEdit, self).__init__()\n\n        # Set the line edit field to only accept numeric values and periods\n        self.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(\"([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[Ee]([+-]?\\d+))?\")))\n\n\nclass MayaFriendlyLineEdit(QtWidgets.QLineEdit):\n\n    def __init__(self):\n        # Initialise our class inheritance\n        super(MayaFriendlyLineEdit, self).__init__()\n\n        # Set the line edit field to only accept numeric values and periods\n        self.setValidator(QtGui.QRegExpValidator(QtCore.QRegExp(\"^[A-Za-z][A-Za-z0-9]*$\")))\n\n\nclass AttributesPrimerWindow(QtWidgets.QDialog):\n\n    def __init__(self, parent=getMayaMainWindow()):\n        # Initialise our class inheritance\n        super(AttributesPrimerWindow, self).__init__(parent)\n        self.setWindowTitle(\"Attributes Primer\")\n\n        # Call our construction methods\n        self.createWidgets() \n        self.createLayouts()\n        self.createConnections()\n\n    \n    def addAttrProcedure(self, \n                         long_name: str,\n                         attribute_type: str,\n                         min_value=None, \n                         max_value=None, \n                         soft_limits=False,\n                         keyable=False,\n                         multi_attr=False):\n        \n        attr_to_add = MayaAttribute(long_name=long_name, \n                                    attribute_type=attribute_type,\n                                    min_value=min_value,\n                                    max_value=max_value,\n                                    soft_limits=soft_limits,\n                                    keyable=keyable,\n                                    multi_attr=multi_attr)\n        \n        selected_objects = cmds.ls(sl=1)\n        for obj in selected_objects:\n            attr_to_add.addAttr(obj=obj)\n        cmds.select(selected_objects)\n\n\n    def checkMinMax(self,\n                    attribute_type):\n        attribute_type_data = ATTRIBUTE_TYPES.get(attribute_type)\n        has_min_max = attribute_type_data.get(\"has_min_max\")\n\n        if has_min_max:\n            self.min_lineEdit.setEnabled(True)\n            self.min_label.setEnabled(True)\n            self.max_lineEdit.setEnabled(True)\n            self.max_label.setEnabled(True)\n            self.softLimits_checkbox.setEnabled(True)\n        else:\n            self.min_lineEdit.setEnabled(False)\n            self.min_lineEdit.clear()\n            self.min_label.setEnabled(False)\n            self.max_lineEdit.setEnabled(False)\n            self.max_lineEdit.clear()\n            self.max_label.setEnabled(False)\n            self.softLimits_checkbox.setEnabled(False)\n        \n\n    def checkEmptyName(self,\n                       name: str):\n        \n        if len(name) == 0:\n            self.addAttr_button.setEnabled(False)\n        else:\n            self.addAttr_button.setEnabled(True)\n\n\n    def createWidgets(self):\n\n        # Type & name widgets\n        self.attrType_label = QtWidgets.QLabel(\"Attribute Type\")\n        self.attrType_combo = QtWidgets.QComboBox()\n        self.attrType_combo.addItems(list(ATTRIBUTE_TYPES))\n        self.attrType_combo.setMaxVisibleItems(len(ATTRIBUTE_TYPES))\n        self.attrType_combo.setCurrentIndex(7)\n        self.longName_label = QtWidgets.QLabel(\"Long Name\")\n        self.longName_lineEdit = MayaFriendlyLineEdit()\n\n        # Limit widgets\n        self.min_label = QtWidgets.QLabel(\"Min\")\n        self.min_lineEdit = NumericLineEdit()\n        self.max_label = QtWidgets.QLabel(\"Max\")\n        self.max_lineEdit = NumericLineEdit()\n\n        # Options widgets\n        self.softLimits_checkbox = QtWidgets.QCheckBox(\"Soft Limits\")\n        self.softLimits_checkbox.setChecked(True)\n        self.keyable_checkbox = QtWidgets.QCheckBox(\"Keyable\")\n        self.multiAttr_checkbox = QtWidgets.QCheckBox(\"Multi\")\n\n        # Add Attr widget\n        self.addAttr_button = QtWidgets.QPushButton(\"Add Attribute\")\n        self.addAttr_button.setEnabled(False)\n\n\n    def createLayouts(self):\n\n        # Attribute Type layout\n        attrType_layout = QtWidgets.QHBoxLayout()\n        attrType_layout.addWidget(self.attrType_label)\n        attrType_layout.addWidget(self.attrType_combo)\n\n        # Long Name layout\n        longName_layout = QtWidgets.QHBoxLayout()\n        longName_layout.addWidget(self.longName_label)\n        longName_layout.addWidget(self.longName_lineEdit)\n\n        # Min Max layout\n        minMax_layout = QtWidgets.QHBoxLayout()\n        minMax_layout.addWidget(self.min_label)\n        minMax_layout.addWidget(self.min_lineEdit)\n        minMax_layout.addWidget(self.max_label)\n        minMax_layout.addWidget(self.max_lineEdit)\n\n        # Options layout\n        options_layout = QtWidgets.QHBoxLayout()\n        options_layout.addWidget(self.softLimits_checkbox)\n        options_layout.addWidget(self.keyable_checkbox)\n        options_layout.addWidget(self.multiAttr_checkbox)\n\n\n        # Create main layout and add layouts/widgets to it\n        self.main_layout = QtWidgets.QVBoxLayout(self)\n        self.main_layout.addLayout(attrType_layout)\n        self.main_layout.addLayout(longName_layout)\n        self.main_layout.addLayout(minMax_layout)\n        self.main_layout.addLayout(options_layout)\n        self.main_layout.addWidget(self.addAttr_button)\n\n\n    def createConnections(self):\n\n        # Type & name connections\n        self.attrType_combo.currentIndexChanged.connect(lambda: self.checkMinMax(attribute_type=self.attrType_combo.currentText()))\n        self.longName_lineEdit.textChanged.connect(lambda: self.checkEmptyName(self.longName_lineEdit.text()))\n\n        # Add Attr connection\n        self.addAttr_button.clicked.connect(lambda: self.addAttrProcedure(long_name=self.longName_lineEdit.text(),\n                                                                          attribute_type=self.attrType_combo.currentText(),\n                                                                          min_value=self.min_lineEdit.text(),\n                                                                          max_value=self.max_lineEdit.text(),\n                                                                          soft_limits=self.softLimits_checkbox.isChecked(),\n                                                                          keyable=self.keyable_checkbox.isChecked(),\n                                                                          multi_attr=self.multiAttr_checkbox.isChecked()))\n\n\nif __name__ == \"__main__\":\n    try:\n        window_instance.close() # type: ignore\n        window_instance.deleteLater() # type: ignore\n\n    except:\n        pass\n\n    # Create the window and display it\n    window_instance = AttributesPrimerWindow()\n    window_instance.show()\n" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Delete inverseScale connection on joints" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Delete inverseScale connection on joints" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "INVDEL" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "kinDisconnect.png" 
+        -image1 "kinDisconnect.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya.api import OpenMaya as om2\nfrom maya import cmds\n\nall_joints = cmds.ls(typ=\"joint\")\n\nfor jnt in all_joints:\n    jnt = jnt+\".inverseScale\"\n    # Get the MObject of the joint\n    msel = om2.MSelectionList()\n    msel.add(jnt)\n    plug = msel.getPlug(0)\n    # Check if plug is connected\n    if plug.isConnected:\n        cmds.disconnectAttr(plug.source(), jnt)\n    " 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Transfer jointOrient to Rotation" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Transfer jointOrient to Rotation" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "TRANS" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "rotateUVcw.png" 
+        -image1 "rotateUVcw.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\n\nsel = cmds.ls(sl=1)\n\nfor i in sel:\n    for axis in (\"x\", \"y\", \"z\"):\n        jo = cmds.getAttr(f\"{i}.jo{axis}\")\n        cmds.setAttr(i+f\".jo{axis}\", 0)\n        cmds.setAttr(i+f\".r{axis}\", jo)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Set rotate order for multiple objects" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Set Rotate Order" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "SET ROT" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "rotateUVcw.png" 
+        -image1 "rotateUVcw.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "import sys\nfrom PySide2 import QtWidgets, QtCore, QtGui\n\nfrom maya import cmds\n\n\nROTATE_ORDERS = (\"xyz\", \"yzx\", \"zxy\", \"xzy\", \"yxz\", \"zyx\")\n\n\ndef setRotateOrder(rotate_order: str):\n    \n    \"\"\"Sets the given rotate order on all selected items\"\"\"\n\n    # Get selection\n    sel = cmds.ls(sl=1)\n\n    for obj in sel:\n\n        #Check if the .rotateOrder attribute exists on the object, else pass\n        if cmds.objExists(f\"{obj}.rotateOrder\") is True:\n            # Get the index of the given rotate order\n            index = ROTATE_ORDERS.index(rotate_order)\n            # Set the rotate order\n            cmds.setAttr(obj+\".rotateOrder\", index)\n\n\n# Create the main window class\nclass MyWindow(QtWidgets.QDialog):\n\n    # Create the constructor and inherit from the base class\n    def __init__(self):\n        super(MyWindow, self).__init__()\n        # Create the UI\n        self.createWidgets()\n        self.createLayouts()\n        self.createConnections()\n        \n\n    def createWidgets(self):\n        # Create the combo box\n        self.choice_combo = QtWidgets.QComboBox()\n        self.choice_combo.addItems(ROTATE_ORDERS)\n        # Create the button\n        self.set_btn = QtWidgets.QPushButton(\"SET\")\n\n\n    def createLayouts(self):\n        self.main_layout = QtWidgets.QVBoxLayout(self)\n        self.main_layout.addWidget(self.choice_combo)\n        self.main_layout.addWidget(self.set_btn)\n    \n\n    def createConnections(self):\n        self.set_btn.clicked.connect(lambda: setRotateOrder(self.choice_combo.currentText()))\n\n\n# Create the window if run as a script, do nothing if imported as a module\nif __name__ == \"__main__\":\n    try:\n        wnd.close()\n        wnd.deleteLater()\n    except:\n        pass\n    \n    wnd = MyWindow()\n    wnd.setWindowTitle(\"Set Rotation Order\")\n    wnd.setFixedSize(170, 90)\n    wnd.show()\n" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Asset Creator" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Asset Creator" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "CREATE" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "container.svg" 
+        -image1 "container.svg" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from shiboken2 import wrapInstance\n\nfrom maya import cmds\nfrom maya import OpenMayaUI as omui\nfrom PySide2 import QtWidgets, QtCore\n\n\n# LOGIC ---------------------------------------------------------------------\n\nclass RigComponent():\n\n    @staticmethod\n    def checkContainerType(obj: str):\n        \"\"\"Checks if the provided object is of type container\n\n    Args:\n        obj (string): the object to check\n\n    Returns:\n        bool: represents if yes/no the given object is a asset if the object exists, otherwise returns None\n    \"\"\"\n        \n        if obj:\n            status = True if cmds.container(obj, q=1, isc=1) else False\n            return status\n        else:\n            return None\n\n\n    @staticmethod\n    def createAsset(name: str, \n                        nodes=[]):\n        \"\"\"Creates a Maya asset with or without provided nodes\n\n    Args:\n        name (string): the name to give the Maya asset\n        nodes (list): A list of nodes as strings\n\n    Returns:\n        None\n    \"\"\"\n        \n        if len(name) > 0:\n            # Check if nodes are part of another asset, if yes remove them from it and add them to this one\n            for node in nodes:\n                container = cmds.container(q=1, fc=[node])\n                if container:\n                    cmds.container(container, e=1, rn=[node])\n\n            cmds.container(n=name, an=nodes)\n\n        return None\n\n\n    @classmethod\n    def deleteAsset(cls):\n        \"\"\"Deletes the selected asset without deleting the nodes inside\n\n    Args:\n        None\n\n    Returns:\n        list: a list of all the nodes that were part of the asset\n    \"\"\"\n        \n        asset = cmds.ls(sl=1)\n        asset = asset[-1] if len(asset)>0 else None\n\n        if cls.checkContainerType(asset) is True:\n            # List all the nodes inside the asset\n            nodes_list = cmds.container(asset, q=1, nl=1)\n            # Delete the asset\n            cmds.container(asset, e=1, rc=1)\n        \n            return nodes_list\n\n\n    @classmethod\n    def addNodesToAsset(cls):\n            \"\"\"Adds the selected nodes to the asset in the selection\n\n        Args:\n            None\n\n        Returns:\n            list: a list of all the added nodes\n        \"\"\"\n\n            # Get the asset in the selection\n            sel = cmds.ls(sl=1)\n\n            assets = []\n            for obj in sel:\n                if RigComponent.checkContainerType(obj) is True:\n                    assets.append(obj)\n            \n            if len(assets) != 1:\n                raise TypeError(\"Only one asset should be part of your selection, you currently either have none or more than one\")\n            else:\n                asset = assets[0]\n            \n            # Remove nodes that are already in the asset\n            asset_nodes = cmds.container(asset, q=1, nl=1)\n            if asset_nodes:\n                asset_nodes += [asset]\n            else:\n                asset_nodes = [asset]\n            to_add_nodes = [i for i in sel if i not in asset_nodes]\n            cmds.container(asset, e=1, an=to_add_nodes, f=1)\n\n            return to_add_nodes\n    \n\n    @classmethod\n    def removeNodesFromAsset(cls):\n            \"\"\"Removes the selected nodes from their asset\n\n    Args:\n        None\n\n    Returns:\n        list: a list of all the removed nodes\n    \"\"\"\n\n            # Get nodes to remove\n            sel = cmds.ls(sl=1)\n\n            assets = []\n            for obj in sel:\n                if RigComponent.checkContainerType(obj) is True:\n                    assets.append(obj)\n                    sel.remove(obj)\n            \n            # Remove nodes that are not in the asset\n            nodes_asset = cmds.container(q=1, fc=sel)\n\n            if nodes_asset:\n                cmds.container(nodes_asset, e=1, rn=sel)\n                return sel\n            \n            else:\n                raise ValueError(\"All the nodes are not from the same asset\")\n            \n\n    @classmethod\n    def publishNodes(cls):\n            \"\"\"Publishes the selected nodes in the selected asset\n\n    Args:\n        None\n\n    Returns:\n        list: a list of all the published nodes\n    \"\"\"\n\n            # Get nodes to publish\n            sel = cmds.ls(sl=1)\n\n            assets = []\n            for obj in sel:\n                if RigComponent.checkContainerType(obj) is True:\n                    assets.append(obj)\n                    sel.remove(obj)\n                        \n            # Remove nodes that are not in the asset\n            nodes_asset = cmds.container(q=1, fc=sel)\n\n            if nodes_asset:\n                for node in sel:\n                    cmds.containerPublish(nodes_asset, pn=[node, \"\"])\n                    cmds.containerPublish(nodes_asset, bn=[node, node])\n                return sel\n            \n            else:\n                raise ValueError(\"All the nodes are not from the same asset\")\n            \n    \n    @classmethod\n    def unpublishNodes(cls):\n            \"\"\"Unpublishes the selected nodes from their asset\n\n    Args:\n        None\n\n    Returns:\n        list: a list of all the unpublished nodes\n    \"\"\"\n\n            # Get nodes to publish\n            sel = cmds.ls(sl=1)\n\n            assets = []\n            for obj in sel:\n                if RigComponent.checkContainerType(obj) is True:\n                    assets.append(obj)\n                    sel.remove(obj)\n            \n            # Remove nodes that are not in the asset\n            nodes_asset = cmds.container(q=1, fc=sel)\n\n            if nodes_asset:\n                for node in sel:\n                    cmds.containerPublish(nodes_asset, ubn=node)\n                    cmds.containerPublish(nodes_asset, upn=node)\n                return sel\n            \n            else:\n                raise ValueError(\"All the nodes are not from the same asset\")\n\n\n    @classmethod\n    def blackboxAsset(cls,\n                      blackboxed=True):\n        \n        \"\"\"Switches on or off the blackbox option on the selected asset\n\n    Args:\n        blackboxed (bool): the desired blackboxing status of the asset\n\n    Returns:\n        bool: The asset blackbox status (on/off)\n    \"\"\"\n        asset = cmds.ls(sl=1)\n        asset = asset[-1] if len(asset)>0 else None\n\n        if cls.checkContainerType(asset) is True:\n            cmds.setAttr(asset+\".blackBox\", blackboxed)\n            \n            return blackboxed\n\n\n# UI ------------------------------------------------------------------------\n\ndef getMayaMainWindow():\n    \"\"\"Gets the QMainWindow instance used by Maya for its main window\n\n    Args:\n        None\n\n    Returns:\n        QMainWindow: the QMainWindow instance used by Maya for its main window\n    \"\"\"\n\n    # Get a pointer to the Maya main window\n    main_window_ptr = omui.MQtUtil.mainWindow()\n    # Return the QMainWindow instance used by Maya for its main window\n    return wrapInstance(int(main_window_ptr), QtWidgets.QMainWindow)\n\n\nclass HLine(QtWidgets.QFrame):\n\n    def __init__(self):\n        # Initialise our class inheritance\n        super(HLine, self).__init__()\n\n        # Set the QFrame style options to make it a line resembling Maya UI\n        self.setFrameShape(self.HLine)\n        self.setFrameShadow(self.Plain)\n\n\nclass AssetCreatorWindow(QtWidgets.QDialog):\n\n    def __init__(self, parent=getMayaMainWindow()):\n        # Initialise our class inheritance\n        super(AssetCreatorWindow, self).__init__(parent)\n        self.setWindowTitle(\"Asset Creator\")\n\n        # Call our construction methods\n        self.createWidgets() \n        self.createLayouts()\n        self.createConnections()\n\n\n    def createWidgets(self):\n        \n        # Lines\n        self.line01 = HLine()\n        self.line02 = HLine()\n\n        # Creation widgets\n        self.assetName_label = QtWidgets.QLabel(\"Asset Name\")\n        self.assetName_lineEdit = QtWidgets.QLineEdit()\n        self.createAsset_button = QtWidgets.QPushButton(\"Create Asset\")\n\n        # Nodes widgets\n        self.addNodes_button = QtWidgets.QPushButton(\"Add Nodes to Asset\")\n        self.removeNodes_button = QtWidgets.QPushButton(\"Remove Nodes from Asset\")\n        self.publishNodes_button = QtWidgets.QPushButton(\"Publish Nodes\")\n        self.unpublishNodes_button = QtWidgets.QPushButton(\"Unpublish Nodes\")\n\n        # Utilities widgets\n        self.blackbox_checkbox = QtWidgets.QCheckBox(\"Black box\")\n        self.deleteAsset_button = QtWidgets.QPushButton(\"Delete Asset\")       \n\n\n    def createLayouts(self):\n\n        # Creation layouts\n        assetName_layout = QtWidgets.QHBoxLayout()\n        assetName_layout.addWidget(self.assetName_label)\n        assetName_layout.addWidget(self.assetName_lineEdit)\n\n        assetCreation_layout = QtWidgets.QVBoxLayout()\n        assetCreation_layout.addLayout(assetName_layout)\n        assetCreation_layout.addWidget(self.createAsset_button)\n\n        # Nodes layouts\n        addRemove_layout = QtWidgets.QHBoxLayout()\n        addRemove_layout.addWidget(self.addNodes_button)\n        addRemove_layout.addWidget(self.removeNodes_button)\n\n        publishUnpublish_layout = QtWidgets.QHBoxLayout()\n        publishUnpublish_layout.addWidget(self.publishNodes_button)\n        publishUnpublish_layout.addWidget(self.unpublishNodes_button)\n\n        assetNodes_layout = QtWidgets.QVBoxLayout()\n        assetNodes_layout.addLayout(addRemove_layout)\n        assetNodes_layout.addLayout(publishUnpublish_layout)\n\n        # Utilities Layout\n        assetUtilities_layout = QtWidgets.QVBoxLayout()\n        assetUtilities_layout.addWidget(self.blackbox_checkbox, 0, QtCore.Qt.AlignHCenter)\n        assetUtilities_layout.addWidget(self.deleteAsset_button)\n\n\n        # Create main layout\n        self.main_layout = QtWidgets.QVBoxLayout(self)\n        # Add layouts/widgets to main layout\n        self.main_layout.addLayout(assetCreation_layout)\n        self.main_layout.addWidget(self.line01)\n        self.main_layout.addLayout(assetNodes_layout)\n        self.main_layout.addWidget(self.line02)\n        self.main_layout.addLayout(assetUtilities_layout)\n        \n\n    def createConnections(self):\n\n        # Creation connections\n        self.createAsset_button.clicked.connect(lambda: RigComponent.createAsset(name=self.assetName_lineEdit.text(), nodes=cmds.ls(sl=1)))\n\n        # Nodes connections\n        self.addNodes_button.clicked.connect(lambda: RigComponent.addNodesToAsset())\n        self.removeNodes_button.clicked.connect(lambda: RigComponent.removeNodesFromAsset())\n        self.publishNodes_button.clicked.connect(lambda: RigComponent.publishNodes())\n        self.unpublishNodes_button.clicked.connect(lambda: RigComponent.unpublishNodes())\n\n        # Utilities connections\n        self.deleteAsset_button.clicked.connect(lambda: RigComponent.deleteAsset())\n        self.blackbox_checkbox.toggled.connect(lambda: RigComponent.blackboxAsset(blackboxed=self.blackbox_checkbox.isChecked()))\n\n\nif __name__ == \"__main__\":\n    try:\n        window_instance.close() # type: ignore\n        window_instance.deleteLater() # type: ignore\n\n    except:\n        pass\n\n    # Create the window and display it\n    window_instance = AssetCreatorWindow()\n    window_instance.show()\n" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Helps you label joints according to their name and side" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Save control shapes" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "LABEL" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "tag.png" 
+        -image1 "tag.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "import maya.cmds as cmds\n\nsel = cmds.ls(sl=1)\n\nfor i in sel:\n    cmds.setAttr(f'{i}.type', 18)\n\n    joint_label = i\n\n    if '_L' in i:\n        cmds.setAttr(f'{i}.side', 1)\n        joint_label = joint_label.replace('_L', '')\n    elif '_R' in i:\n        cmds.setAttr(f'{i}.side', 2)\n        joint_label = joint_label.replace('_R', '')\n    else:\n        cmds.setAttr(f'{i}.side', 0)\n\n    cmds.setAttr(f'{i}.otherType', joint_label, type='string')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Move skinned joint position (Toggle on/off)" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Move skinned joint position" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "MOVE" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "kinJoint.png" 
+        -image1 "kinJoint.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from erf.core import api\nfrom maya import cmds\n\n\ndef do_neutralisation(jnt: api.DagNode, skc: api.Node, array_pos: int):\n    api.Attribute(jnt, \"worldInverseMatrix\", array=True, logical_index=0).connect_to(api.Attribute(skc, \"bindPreMatrix\", array=True, logical_index=array_pos))\n    print(\"DO\")\n\n\ndef undo_neutralisation(skc: api.Node, array_pos: int):\n    pre_bind_attr = api.Attribute(skc, \"bindPreMatrix\", array=True, logical_index=array_pos)\n    mtx = pre_bind_attr.value\n    pre_bind_attr.disconnect_in()\n    pre_bind_attr.set_value(mtx)\n    print(\"UNDO\")\n\n\nsel = cmds.ls(selection=True)\n\nif len(sel) != 1:\n    raise RuntimeError(f\"Please only select one object for this operation, you selected '{len(sel)}' objects\")\nelse:\n    sel = sel[0]\n\n# Make sure that the selection is a joint\nif cmds.nodeType(sel) != \"joint\":\n    raise RuntimeError(f\"The selected object is not a joint\")\n\njnt = api.DagNode(sel, create=False)\n\n# Query which attribute the worldMatrix of the joint is connected to on a skin cluster\njnt_wMtx = api.Attribute(jnt, \"worldMatrix\", array=True, logical_index=0)\njnt_wMtx_connections = jnt_wMtx._plug.connectedTo(False, True)\njnt_inverse_wMtx = api.Attribute(jnt, \"worldInverseMatrix\", array=True, logical_index=0)\njnt_inverse_wMtx_connections = jnt_inverse_wMtx._plug.connectedTo(False, True)\n\nskin_clusters = [i for i in jnt_wMtx.destination_nodes if cmds.nodeType(i) == \"skinCluster\"]\n\nfor skc in skin_clusters:\n    skc_connections = [i for i in jnt_wMtx_connections if i.node() == skc._mfn_node.object()]\n    skc_inverse_connections = [i for i in jnt_inverse_wMtx_connections if i.node() == skc._mfn_node.object()]\n\n    if len(skc_connections) != 1:\n        raise RuntimeError(f\"The joint '{jnt.name}' has more that one connection on the skin cluster '{skc.name}'\")\n\n    # Get the array position\n    array_pos = skc_connections[0].logicalIndex()\n\n    if len(skc_inverse_connections) == 0:\n        do_neutralisation(jnt, skc, array_pos)\n    else:\n        undo_neutralisation(skc, array_pos)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Paint smooth skin cluster weights for the selection" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Paint Smooth Weights Tool" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "brSmoothWeights.svg" 
+        -image1 "brSmoothWeights.svg" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "brSmoothWeightsToolCtx" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Paint weights on smooth bound skins" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Paint Skin Weights" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "paintSkinWeights.png" 
+        -image1 "paintSkinWeights.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "ArtPaintSkinWeightsTool" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Mirrors the skin weights on the selected bound mesh" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Mirror Skin Weights" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "mirrorSkinWeight.png" 
+        -image1 "mirrorSkinWeight.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "MirrorSkinWeights" 
+        -sourceType "mel" 
+        -doubleClickCommand "MirrorSkinWeightsOptions;" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Removes weights below a specified value" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Prune Small Weights" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "PSW" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "menuIconSkinning.png" 
+        -image1 "menuIconSkinning.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "PruneSmallWeights" 
+        -sourceType "mel" 
+        -doubleClickCommand "PruneSmallWeightsOptions;" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Smooth bind skin" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Bind Skin" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "smoothSkin.png" 
+        -image1 "smoothSkin.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "SmoothBindSkin" 
+        -sourceType "mel" 
+        -doubleClickCommand "SmoothBindSkinOptions" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Detach skin" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Unbind Skin" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "detachSkin.png" 
+        -image1 "detachSkin.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "DetachSkin" 
+        -sourceType "mel" 
+        -doubleClickCommand "DetachSkinOptions;" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Adds the selected object as an influence to the selceted skinCluster" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Add Influence" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "addWrapInfluence.png" 
+        -image1 "addWrapInfluence.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "AddInfluence" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Removes the selected influence from the selected skinCluster" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Remove Influence" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "removeWrapInfluence.png" 
+        -image1 "removeWrapInfluence.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "RemoveInfluence" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "SHAPES" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "SHAPES" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "C:/Users/Elio/Documents/maya/modules/SHAPES/icons/SHAPES.svg" 
+        -image1 "C:/Users/Elio/Documents/maya/modules/SHAPES/icons/SHAPES.svg" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "SHAPES" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "DPK BCS UI" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "DPK_bcsUI;" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "BCS" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "commandButton.png" 
+        -image1 "commandButton.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "DPK_bcsUI;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "DPK_mirrorGeoUI" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "DPK_mirrorGeoUI" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "MIRROR" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "commandButton.png" 
+        -image1 "commandButton.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "DPK_mirrorGeoUI" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Blendshape two shapes and set their weights at 1 and -1" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "BS 1.-1" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "BS 1.-1" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "pythonFamily.png" 
+        -image1 "pythonFamily.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\n\ndef bs_with_weights(weight_01: float, weight_02: float):\n    sel = cmds.ls(selection=True)\n    bs_node = cmds.blendShape(sel)\n    cmds.blendShape(bs_node, edit=True, weight=[0, weight_01])\n    cmds.blendShape(bs_node, edit=True, weight=[1, weight_02])\n    return bs_node\n\nbs_with_weights(1, -1)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Blendshape two shapes and set their weights at 1 and 1" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "BS 1.1" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "BS 1.1" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "pythonFamily.png" 
+        -image1 "pythonFamily.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\n\ndef bs_with_weights(weight_01: float, weight_02: float):\n    sel = cmds.ls(selection=True)\n    bs_node = cmds.blendShape(sel)\n    cmds.blendShape(bs_node, edit=True, weight=[0, weight_01])\n    cmds.blendShape(bs_node, edit=True, weight=[1, weight_02])\n    return bs_node\n\nbs_with_weights(1, 1)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Blendshape a shape and the weight at 1" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "BS 1" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "BS 1" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "pythonFamily.png" 
+        -image1 "pythonFamily.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\n\ndef bs_with_weight(weight: float):\n    sel = cmds.ls(selection=True)\n    bs_node = cmds.blendShape(sel)\n    cmds.blendShape(bs_node, edit=True, weight=[0, weight])\n    return bs_node\n\nbs_with_weight(1)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Adjust how much influence a Blend Shape deformer has over specific parts of the mesh surface." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Paint BS weight" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "paintBlendshape.png" 
+        -image1 "paintBlendshape.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "ArtPaintBlendShapeWeightsTool" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "performExtractDeltas;" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "performExtractDeltas;" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "DELTA" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "commandButton.png" 
+        -image1 "commandButton.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "performExtractDeltas;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+
+} 
