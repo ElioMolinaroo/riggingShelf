@@ -9,7 +9,7 @@ global proc shelf_Elio () {
         -flexibleWidthType 3
         -flexibleWidthValue 32
         -enable 1
-        -width 39
+        -width 35
         -height 34
         -manage 1
         -visible 1
@@ -550,7 +550,7 @@ global proc shelf_Elio () {
         -style "iconOnly" 
         -marginWidth 0
         -marginHeight 1
-        -command "from maya import cmds\nfrom maya.api import OpenMaya as om2\n\n\ndef reset_transforms_and_user_attrs(mfn_node: om2.MFnDependencyNode):\n    \"\"\"Resets the animation attributes for the given node\n\n    Args:\n        mfn_node (om2.MFnDependencyNode / om2.MFnDagNode): The node on which to reset the attributes\n    \"\"\"\n    # Iterate over every attribute\n    attrs_list = [om2.MFnAttribute(mfn_node.attribute(i)) for i in range(mfn_node.attributeCount())]\n\n    # Eliminate some attributes\n    for attr in attrs_list:\n        if not attr.writable or not attr.keyable or attr.hidden:\n            continue\n\n        # Remove all of the default value attributes\n        mplug = om2.MPlug(mfn_node.object(), attr.object())\n        if \"-1\" in mplug.name() or mplug.isDefaultValue() or mplug.isLocked:\n            continue\n\n        default = cmds.attributeQuery(attr.name, node=mfn_node.uniqueName(), listDefault=True)\n        cmds.setAttr(mplug.name(), default[0] if len(default) > 0 else 0)\n\n\n# Get the selection\nmsel = om2.MGlobal.getActiveSelectionList()\n\n# Iterate over every node\nfor i in range(msel.length()):\n    mob = msel.getDependNode(i)\n    if mob.apiType() == 107:\n        node = om2.MFnDagNode(mob)\n    else:\n        node = om2.MFnDependencyNode(mob)\n\n    reset_transforms_and_user_attrs(mfn_node=node)" 
+        -command "from maya import cmds\nfrom maya.api import OpenMaya as om2\n\n\ndef reset_transforms_and_user_attrs(mfn_node: om2.MFnDependencyNode):\n    \"\"\"Resets the animation attributes for the given node\n\n    Args:\n        mfn_node (om2.MFnDependencyNode / om2.MFnDagNode): The node on which to reset the attributes\n    \"\"\"\n    # Iterate over every attribute\n    attrs_list = [om2.MFnAttribute(mfn_node.attribute(i)) for i in range(mfn_node.attributeCount())]\n\n    # Eliminate some attributes\n    for attr in attrs_list:\n        if not attr.writable or not attr.keyable or attr.hidden:\n            continue\n\n        # Remove all of the default value attributes\n        mplug = om2.MPlug(mfn_node.object(), attr.object())\n        if \"-1\" in mplug.name() or mplug.isDefaultValue() or mplug.isLocked:\n            continue\n\n        default = cmds.attributeQuery(attr.name, node=mfn_node.uniqueName(), listDefault=True)\n        try:\n            cmds.setAttr(mplug.name(), default[0] if len(default) > 0 else 0)\n        except:\n            om2.MGlobal.displayWarning(f\"Could not reset attribute '{mplug.name()}'\")\n\n\n# Get the selection\nmsel = om2.MGlobal.getActiveSelectionList()\n\n# Iterate over every node\nfor i in range(msel.length()):\n    mob = msel.getDependNode(i)\n    if mob.apiType() == 107:\n        node = om2.MFnDagNode(mob)\n    else:\n        node = om2.MFnDependencyNode(mob)\n\n    reset_transforms_and_user_attrs(mfn_node=node)" 
         -sourceType "python" 
         -commandRepeatable 1
         -flat 1
@@ -1697,6 +1697,40 @@ global proc shelf_Elio () {
         -marginHeight 1
         -command "performExtractDeltas;" 
         -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "import erf\nerf.graphUI()" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "import erf\nerf.graphUI()" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "C:/Users/3d4/Documents/maya/modules/ERF/icons/erf_walrus.svg" 
+        -image1 "C:/Users/3d4/Documents/maya/modules/ERF/icons/erf_walrus.svg" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "import erf\nerf.graphUI()" 
+        -sourceType "python" 
         -commandRepeatable 1
         -flat 1
     ;
